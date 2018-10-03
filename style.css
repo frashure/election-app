@@ -1,0 +1,19 @@
+nav {
+  height: auto;
+  width: 100%;
+  background-color: navy;
+  color: white;
+}
+
+nav a {
+  height: auto;
+  width: auto;
+  vertical-align: middle;
+  color: white;
+  text-decoration: none;
+}
+
+#login-link {
+  position: relative;
+  margin-right: 10px;
+}
