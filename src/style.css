@@ -17,3 +17,8 @@ nav a {
   position: relative;
   margin-right: 10px;
 }
+
+#main-content {
+  display: flex;
+  flex-direction: row;
+}
