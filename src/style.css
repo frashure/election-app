@@ -1,16 +1,30 @@
 nav {
+  display: flex;
+  justify-content: flex-start;
   height: auto;
   width: 100%;
   background-color: navy;
   color: white;
+  margin-bottom: 20px;
+  border-radius: 5px;
 }
 
 nav a {
+  margin: 20px;
   height: auto;
   width: auto;
   vertical-align: middle;
   color: white;
   text-decoration: none;
+}
+
+nav h1 {
+  background-color: white;
+  color: navy;
+}
+
+#login-link {
+  margin-left: auto;
 }
 
 #login-link {
@@ -21,4 +35,5 @@ nav a {
 #main-content {
   display: flex;
   flex-direction: row;
+  color: black;
 }
