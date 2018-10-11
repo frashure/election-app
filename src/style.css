@@ -3,7 +3,7 @@ nav {
   justify-content: flex-start;
   height: auto;
   width: 100%;
-  background-color: navy;
+  background-color: black;
   color: white;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -20,7 +20,7 @@ nav a {
 
 nav h1 {
   background-color: white;
-  color: navy;
+  color: black;
 }
 
 #login-link {
@@ -34,6 +34,32 @@ nav h1 {
 
 #main-content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   color: black;
+}
+
+.candidate-card {
+  height: auto;
+  width: 500px;
+  margin-right: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cardHeader {
+  font-size: 20px;
+}
+
+.libertarian-card {
+  background-color: yellow;
+}
+
+.republican-card {
+  background-color: red;
+}
+
+.democratic-card {
+  background-color: blue;
+  color: white;
 }
