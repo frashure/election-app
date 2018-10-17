@@ -1,3 +1,7 @@
+body {
+  font-family: arial;
+}
+
 nav {
   display: flex;
   justify-content: flex-start;
@@ -6,11 +10,10 @@ nav {
   background-color: black;
   color: white;
   margin-bottom: 20px;
-  border-radius: 5px;
 }
 
 nav a {
-  margin: 20px;
+  margin: 25px;
   height: auto;
   width: auto;
   vertical-align: middle;
@@ -33,18 +36,31 @@ nav h1 {
 }
 
 #main-content {
+  color: black;
+}
+
+#party-selector {
+  width: 250px;
+}
+
+#search-btn {
+  width: 75px;
+}
+
+.results-container {
   display: flex;
   flex-direction: column;
-  color: black;
+  margin-top: 20px;
 }
 
 .candidate-card {
   height: auto;
-  width: 500px;
+  width: auto;
   margin-right: auto;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
+  justify-content: flex-start;
 }
 
 .cardHeader {

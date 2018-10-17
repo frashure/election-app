@@ -2,10 +2,14 @@ var express = require('express');
   app = express();
   port = process.env.PORT || 3000;
 
-app.listen(port);
+path = require('path');
 
 console.log('Election App RESTful API server started on: ' + port);
 
-app.get('/', (req, res) => res.send('Hello World!'));
+var indexPath = path.join(__dirname, '../src/');
+
+app.use(express.static(indexPath));
 
 app.delete('/', (req, res) => res.send("Please don't try deleting the entire site. That's not cool."));
+
+app.listen(port);
