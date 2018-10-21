@@ -55,7 +55,7 @@ nav h1 {
 
 .candidate-card {
   height: auto;
-  width: auto;
+  width: 250px;
   margin-right: auto;
   margin-bottom: 10px;
   padding: 10px;
