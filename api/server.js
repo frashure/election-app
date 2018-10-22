@@ -2,6 +2,7 @@ var express = require('express');
 app = express();
 port = process.env.PORT || 3000;
 path = require('path');
+const ENV = require('dotenv').config();
 
 // Serve index.html for requests to root path
 var indexPath = path.join(__dirname, '../src/');
@@ -10,6 +11,10 @@ app.use('/', express.static(indexPath));
 // Serve search.html for requests to /search path
 var searchPath = path.join(__dirname, '../src/search.html');
 app.use('/search', express.static(searchPath));
+
+// Serve about.html for requests to /about path
+var aboutPath = path.join(__dirname, '../src/about.html');
+app.use('/about', express.static(aboutPath));
 
 app.delete('/', (req, res) => res.send("Please don't try deleting the entire site. That's not cool."));
 
