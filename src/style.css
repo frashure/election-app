@@ -54,14 +54,16 @@ nav h1 {
 }
 
 .candidate-card {
+  display: flex;
   height: auto;
-  width: 250px;
+  width: 500px;
   margin-right: auto;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
   justify-content: flex-start;
   box-shadow: 3px 3px 3px 3px gray;
+  box-sizing: border-box;
 }
 
 .cardHeader {
@@ -79,4 +81,49 @@ nav h1 {
 .democratic-card {
   background-color: blue;
   color: white;
+}
+
+a.endorseBtn {
+display: inline-block;
+padding: 0.35em 1.2em;
+border: 0.1em solid #000000;
+background-color: #FFFFFF;
+margin-left: auto;
+border-radius: 0.2em;
+box-sizing: border-box;
+text-decoration: none;
+font-family: 'Roboto',sans-serif;
+font-weight: 300;
+color: #000000;
+text-align: center;
+transition: all 0.2s;
+}
+
+a.endorseBtn:hover {
+color: #FFFFFF;
+background-color: green;
+border-color: #FFFFFF;
+}
+
+a.endorseBtnClicked {
+display: inline-block;
+padding: 0.35em 1.2em;
+border: 0.1em solid #FFFFFF;
+background-color: green;
+margin-left: auto;
+border-radius: 0.2em;
+box-sizing: border-box;
+text-decoration: none;
+font-family: 'Roboto',sans-serif;
+font-weight: 300;
+color: #FFFFFF;
+text-align: center;
+transition: all 0.2s;
+}
+
+@media all and (max-width:30em) {
+a.endorseBtn {
+display:block;
+margin:0.4em auto;
+ }
 }

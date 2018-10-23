@@ -24,7 +24,7 @@ var searchCandidatesByParty = function() {
   }
 
   var partySelection = document.getElementById("party-selector").value;
-      console.log(partySelection);
+      console.log("Party: ",partySelection);
 
   for (i = 0; i < candidates.length; i++) {
    if (candidates[i].party == partySelection) {
@@ -38,10 +38,32 @@ var searchCandidatesByParty = function() {
       var lineBreak = document.createElement("br");
       card.appendChild(lineBreak);
       card.appendChild(cardText);
+      var endorseBtn = document.createElement("a");
+      endorseBtn.className = "endorseBtn";
+      endorseBtn.innerHTML = "Endorse";
+      card.appendChild(endorseBtn);
       resultsContainer.appendChild(card);
+
+      endorseBtn.addEventListener('click', endorseOnClick);
+      console.log("Event listener added to endorseBtn.");
    }
   }
   console.log("Search completed.")
+}
+
+var endorseBtn = document.getElementsByClassName("endorseBtn");
+console.log(endorseBtn);
+var setListeners = function() {
+for (var i = 0; i < endorseBtn.length; i++) {
+endorseBtn.addEventListener('click', endorseOnClick);
+console.log("Event listener added to endorseBtn.");
+  }
+}
+
+var endorseOnClick = function() {
+  this.className = "endorseBtnClicked";
+  this.innerHTML = "Endorsed";
+  console.log("Button clicked!")
 }
 
 // window.onload = function() {
