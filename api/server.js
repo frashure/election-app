@@ -4,6 +4,9 @@ port = process.env.PORT || 3000;
 path = require('path');
 const ENV = require('dotenv').config();
 
+app.listen(port);
+console.log('Election App RESTful API server started on: ' + port);
+
 // Serve index.html for requests to root path
 var indexPath = path.join(__dirname, '../src/');
 app.use('/', express.static(indexPath));
@@ -17,10 +20,6 @@ var aboutPath = path.join(__dirname, '../src/about.html');
 app.use('/about', express.static(aboutPath));
 
 app.delete('/', (req, res) => res.send("Please don't try deleting the entire site. That's not cool."));
-
-app.listen(port);
-
-console.log('Election App RESTful API server started on: ' + port);
 
 // Pass candidates route requests to candidatesRoutes.js module
 var candidates = require('./routes/candidatesRoutes.js');
