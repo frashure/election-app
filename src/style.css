@@ -1,9 +1,11 @@
 body {
-  font-family: arial;
+  font-family: Arial;
+  margin: 0;
 }
 
 nav {
   display: flex;
+  padding: 10px;
   justify-content: flex-start;
   height: auto;
   width: 100%;
@@ -19,6 +21,11 @@ nav a {
   vertical-align: middle;
   color: white;
   text-decoration: none;
+  border-bottom: 2px solid black;
+}
+
+nav a:hover {
+  border-bottom: 2px solid white;
 }
 
 nav h1 {
@@ -28,15 +35,12 @@ nav h1 {
 
 #login-link {
   margin-left: auto;
-}
-
-#login-link {
-  position: relative;
-  margin-right: 10px;
+  margin-right: 50px;
 }
 
 #main-content {
   color: black;
+  padding: 10px;
 }
 
 #party-selector {
@@ -70,7 +74,7 @@ nav h1 {
   font-size: 20px;
 }
 
-.libertarian-card {
+.Libertarian-card {
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f1e767+0,feb645+100;Yellow+3D */
   background: rgb(241,231,103); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%); /* FF3.6-15 */
@@ -79,7 +83,7 @@ nav h1 {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
 }
 
-.republican-card {
+.Republican-card {
  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f85032+0,f16f5c+50,f6290c+51,f02f17+71,e73827+100;Red+Gloss+%231 */
   background: rgb(248,80,50); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(248,80,50,1) 0%, rgba(241,111,92,1) 50%, rgba(246,41,12,1) 51%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%); /* FF3.6-15 */
@@ -88,7 +92,7 @@ nav h1 {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827',GradientType=0 ); /* IE6-9 */
 }
 
-.democratic-card {
+.Democratic-card {
   color: white;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
   background: rgb(30,87,153); /* Old browsers */
