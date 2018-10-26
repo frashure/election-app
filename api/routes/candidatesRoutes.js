@@ -2,11 +2,14 @@
 
 const EXPRESS = require('express');
 const ROUTER = EXPRESS.Router();
+var candidatesController = require('../controllers/candidateController');
 
-// Candidates GET route
-ROUTER.get('/', (req, res) => {
-  res.send('Candidates GET router successful!')
-});
+// Candidates GET route, all candidates
+ROUTER.get('/', candidatesController.getAllCandidates);
+ROUTER.get('/id=:id', candidatesController.getCandidatesById);
+ROUTER.get('/party=:party', candidatesController.getCandidatesByParty);
+
+
 
 // Candidates DELETE route
 ROUTER.delete('/', (req, res) => {
