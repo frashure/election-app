@@ -5,19 +5,19 @@ var candidateController = {
 
     // Get all candidates
     getAllCandidates: function (req, res) {
-        var results = db.query('SELECT * FROM candidates', function (err, results) {
+        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id ORDER BY c.lName`, function (err, results) {
             if (err) {
                 console.log(err);
             }
 
             // Create results
-            var resultsJson = JSON.stringify(results);
-            resultsJson = JSON.parse(resultsJson);
-            var apiResult = {};
+            // var resultsJson = JSON.stringify(results);
+            // resultsJson = JSON.parse(resultsJson);
+            // var apiResult = {};
 
-            apiResult.data = resultsJson;
+            // apiResult.data = resultsJson;
 
-            res.json(apiResult);
+            res.json(results);
 
           } // End callback
         ); // End db.query
@@ -43,19 +43,12 @@ var candidateController = {
     }, // End getCandidatesById
 
     getCandidatesByParty: function (req, res) {
-        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE partyName = "${req.params.party}"`, function (err, results) {
+        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE p.partyName = "${req.params.party}" ORDER BY c.lName`, function (err, results) {
             if (err) {
                 console.log(err)
             }
 
-            // Create results
-            var resultsJson = JSON.stringify(results);
-            resultsJson = JSON.parse(resultsJson);
-            var apiResult = {};
-
-            apiResult.data = resultsJson;
-
-            res.json(apiResult);
+            res.json(results);
         } // end callback 
         ) // end db.query
     } // end getCandidatesByParty
