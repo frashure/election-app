@@ -43,7 +43,7 @@ var candidateController = {
     }, // End getCandidatesById
 
     getCandidatesByParty: function (req, res) {
-        var results = db.query(`SELECT * FROM candidates WHERE party_id = ${req.params.party}`, function (err, results) {
+        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE partyName = "${req.params.party}"`, function (err, results) {
             if (err) {
                 console.log(err)
             }
