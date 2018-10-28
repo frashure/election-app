@@ -96,15 +96,15 @@ console.log("Event listener added to endorseBtn.");
   }
 }
 
-var endorseOnClick = function() {
-  if (this.className == "endorseBtn") {
-  this.className = "endorseBtnClicked";
-  this.innerHTML = "Endorsed";
-  console.log("Candidate endorsed!")
-  }
-  else {
-    this.className = "endorseBtn";
-    this.innerHTML = "Endorse";
-    console.log("Candidate endorsement removed!")
-  }
-}
+// var endorseOnClick = function() {
+//   if (this.className == "endorseBtn") {
+//   this.className = "endorseBtnClicked";
+//   this.innerHTML = "Endorsed";
+//   console.log("Candidate endorsed!")
+//   }
+//   else {
+//     this.className = "endorseBtn";
+//     this.innerHTML = "Endorse";
+//     console.log("Candidate endorsement removed!")
+//   }
+// }
