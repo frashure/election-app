@@ -4,7 +4,7 @@ var validator = require('express-validator');
 var userController = {
     register: function (req, res) {
 
-        // req.checkBody(req.params.email, 'Username field cannot be empty').notEmpty();
+        req.checkBody(req.params.email, 'Username field cannot be empty').notEmpty();
 
         const email = '"' + req.params.email + '"';
         const password = '"' + req.params.password + '"';
