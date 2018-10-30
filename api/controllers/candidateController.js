@@ -49,7 +49,7 @@ var candidateController = {
             }
 
             res.json(results);
-        } // end callback 
+        } // end query callback 
         ) // end db.query
     } // end getCandidatesByParty
 

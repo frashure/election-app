@@ -1,7 +1,8 @@
 var express = require('express');
 var app = express();
-port = process.env.PORT || 3000;
-path = require('path');
+var port = process.env.PORT || 3000;
+var path = require('path');
+var validator = require('express-validator');
 const ENV = require('dotenv').config();
 
 app.listen(port);
@@ -28,3 +29,7 @@ app.use('/candidates', candidates);
 // Pass parties route requests to partiesRoutes.js module
 var parties = require('./routes/partiesRoutes.js');
 app.use('/parties', parties);
+
+// Pass user related route requests to userRoutes.js module
+var users = require('./routes/userRoutes.js');
+app.use('/user', users);
