@@ -33,9 +33,20 @@ nav h1 {
   color: black;
 }
 
-#login-link {
+form {
+  margin: 20px 75px 0 75px;
+}
+
+.form-control {
+  width: 50%;
+}
+
+#register-link {
   margin-left: auto;
-  margin-right: 50px;
+}
+
+#login-link {
+  margin-right: 100px;
 }
 
 #main-content {
