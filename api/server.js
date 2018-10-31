@@ -2,11 +2,20 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 var path = require('path');
-var validator = require('express-validator');
+var expressValidator = require('express-validator');
+var validator = expressValidator();
 const ENV = require('dotenv').config();
+var bodyParser = require('body-parser');
 
 app.listen(port);
 console.log('Election App RESTful API server started on: ' + port);
+
+// Use bodyparsey for passing data through forms
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Use validation on registration forms
+app.use(validator);
 
 // Serve index.html for requests to root path
 var indexPath = path.join(__dirname, '../src/');
