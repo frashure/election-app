@@ -1,5 +1,5 @@
-var db = require('../models/dbconnection');
-var validator = require('express-validator');
+const db = require('../models/dbconnection');
+const { check, validationResult } = require('express-validator/check');
 
 var userController = {
 
@@ -19,7 +19,7 @@ var userController = {
         req.checkBody(password, 'Password must be between 8-100 characters.').len(8, 100);
         req.checkBody(passwordMatch, 'Passwords do not match.').equals(password);
 
-        if (!validationResult(req).isEmpty) {
+        if (!validationResult(req).isEmpty()) {
             console.log(validationResult(req))
         }
         else {
