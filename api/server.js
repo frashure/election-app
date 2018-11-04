@@ -6,6 +6,8 @@ var expressValidator = require('express-validator');
 var validator = expressValidator();
 const ENV = require('dotenv').config();
 var bodyParser = require('body-parser');
+const session = require('express-session');
+const uid = require('uuid/v4');
 
 app.listen(port);
 console.log('Election App RESTful API server started on: ' + port);
@@ -16,6 +18,11 @@ app.use(bodyParser.json());
 
 // Use validation on registration forms
 app.use(validator);
+
+
+
+
+// R O U T E S
 
 // Serve index.html for requests to root path
 var indexPath = path.join(__dirname, '../src/');

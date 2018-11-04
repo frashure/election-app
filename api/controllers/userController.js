@@ -34,7 +34,12 @@ var userController = {
             ); //end query
         }
             res.send("Registration complete!")
-    } // end register function
-} // end class
+    }, // end register function
+
+    // login function, pulls params from req body
+    login: function (req, res) {
+        
+    } // end login function
+}; // end class
 
 module.exports = userController;
