@@ -1,43 +1,55 @@
 const db = require('../models/dbconnection');
-const { check, validationResult } = require('express-validator/check');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 var userController = {
 
     // register function pulls parameters from request body
     register: function (req, res) {
 
-        const email = req.body.email;
-        const password = req.body.password;
-        const fName = req.body.firstName;
-        const lName = req.body.lastName;
-        const passwordMatch = req.body.passwordMatch;
-        const dateRegistered = new Date();
+        let email = req.body.email;
+        let password = req.body.password;
+        let fName = req.body.firstName;
+        let lName = req.body.lastName;
+        let passwordMatch = req.body.passwordMatch;
+        let dateRegistered = new Date();
         
 
-        req.checkBody(email, 'Username field cannot be empty.').notEmpty();
-        req.checkBody(email, 'Invalid email').isEmail();
-        req.checkBody(password, 'Password must be between 8-100 characters.').len(8, 100);
-        req.checkBody(passwordMatch, 'Passwords do not match.').equals(password);
+        req.check('email', 'Email field cannot be empty.').not().isEmpty();
+        req.check('email', 'Invalid email').isEmail();
+        req.check('password', 'Password field is required').not().isEmpty();
+        req.check('password', 'Password must be between 8-100 characters.').isLength(8, 100);
+        req.check('passwordMatch', 'Passwords do not match.').equals(req.body.password);
 
-        if (!validationResult(req).isEmpty()) {
-            console.log(validationResult(req))
+
+        let errors = req.validationErrors();
+
+        if (errors) {
+            console.log(errors);
+            res.send(errors);
+
         }
         else {
-            var results = db.query('INSERT INTO voters (email, voter_password, date_registered, fName, lName) VALUES (?, ?, ?, ?, ?)', [email, password, dateRegistered, fName, lName], function(err, results) {
-                if (err) {
-                   console.log(err)
-                }
-                else {
-                    console.log("Registration complete!");
-                }
-                } // end query callback
-            ); //end query
-        }
-            res.send("Registration complete!")
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+                db.query('INSERT INTO voters (email, voter_password, date_registered, fName, lName) VALUES (?, ?, ?, ?, ?)', [email, hash, dateRegistered, fName, lName], function(err, results) {
+                    if (err) {
+                       console.log(err);
+                       res.send(err);
+                    }
+                    else {
+                        console.log("Registration complete!");
+                        res.send("Registration complete!");
+                    }
+                    } // end query callback
+                ); //end query
+            });
+        } // end else
     }, // end register function
 
     // login function, pulls params from req body
     login: function (req, res) {
+
+        
         
     } // end login function
 }; // end class

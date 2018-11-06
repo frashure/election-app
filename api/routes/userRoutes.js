@@ -1,4 +1,4 @@
-// user routes 
+const { check, validationResult } = require('express-validator/check');
 
 const EXPRESS = require('express');
 const ROUTER = EXPRESS.Router();
