@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS `election_test`.`candidates` (
   `fName` VARCHAR(45) NOT NULL,
   `lName` VARCHAR(45) NOT NULL,
   `incumbent` TINYINT(1) NOT NULL,
-  `party_id` INT(11) NOT NULL DEFAULT NULL,
-  PRIMARY KEY (`candidate_id`, `party_id`),
+  `party_id` INT(11) NOT NULL,
+  PRIMARY KEY (`candidate_id`),
   UNIQUE INDEX `candidate_id_UNIQUE` (`candidate_id` ASC),
   INDEX `fk_candidates_parties1_idx` (`party_id` ASC),
   CONSTRAINT `fk_candidates_parties1`
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `election_test`.`candidates` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 15
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -63,8 +63,8 @@ CREATE TABLE IF NOT EXISTS `election_test`.`voters` (
   `date_registered` DATE NOT NULL,
   `fName` VARCHAR(45) NOT NULL,
   `lName` VARCHAR(45) NOT NULL,
-  `party_id` INT(11) NOT NULL DEFAULT NULL,
-  PRIMARY KEY (`voter_id`, `party_id`),
+  `party_id` INT(11) NOT NULL,
+  PRIMARY KEY (`voter_id`),
   INDEX `fk_voters_parties1_idx` (`party_id` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   CONSTRAINT `fk_voters_parties1`
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `election_test`.`voters` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
