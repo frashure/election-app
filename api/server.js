@@ -12,7 +12,7 @@ const uid = require('uuid/v4');
 app.listen(port);
 console.log('Election App RESTful API server started on: ' + port);
 
-// Use bodyparsey for passing data through forms
+// Use bodyparser for passing data through forms
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -49,3 +49,7 @@ app.use('/parties', parties);
 // Pass user related route requests to userRoutes.js module
 var users = require('./routes/userRoutes.js');
 app.use('/user', users);
+
+// Pass endorsements related route requests to endorsementsRoutes.js module
+var endorsements = require('.routes/endorsementsRoutes.js');
+app.use('/endorsements', endorsements);
