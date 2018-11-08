@@ -8,6 +8,7 @@ const ENV = require('dotenv').config();
 var bodyParser = require('body-parser');
 const session = require('express-session');
 const uid = require('uuid/v4');
+var passport = require('passport');
 
 app.listen(port);
 console.log('Election App RESTful API server started on: ' + port);
@@ -19,6 +20,15 @@ app.use(bodyParser.json());
 // Use validation on registration forms
 app.use(validator);
 
+// Use express-session
+app.use(session({
+    secret: 'LhtXfJddcfvVs06syqZQBJ1x8nhW3e74',
+    resave: false,
+    saveUninitialized: false,
+    // cookie: {secure: true}
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
@@ -51,5 +61,5 @@ var users = require('./routes/userRoutes.js');
 app.use('/user', users);
 
 // Pass endorsements related route requests to endorsementsRoutes.js module
-var endorsements = require('.routes/endorsementsRoutes.js');
+var endorsements = require('./routes/endorsementsRoutes.js');
 app.use('/endorsements', endorsements);
