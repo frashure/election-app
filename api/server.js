@@ -7,6 +7,7 @@ var path = require('path');
 const ENV = require('dotenv').config();
 var bodyParser = require('body-parser');
 const session = require('express-session');
+const MYSQLstore = require('express-mysql-session')(session);
 const uid = require('uuid/v4');
 var passport = require('passport');
 
@@ -20,16 +21,26 @@ app.use(bodyParser.json());
 // Use validation on registration forms
 app.use(validator);
 
+// MySQL store options
+var options = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_SCHEMA
+};
+
+var storeSession = new MYSQLstore(options);
+
 // Use express-session
 app.use(session({
     secret: 'LhtXfJddcfvVs06syqZQBJ1x8nhW3e74',
+    store: storeSession,
     resave: false,
     saveUninitialized: false,
     // cookie: {secure: true}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 
 // R O U T E S

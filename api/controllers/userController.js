@@ -1,7 +1,25 @@
 const db = require('../models/dbconnection');
+const passport = require('passport');
+// const session = require('express-session');
+// const MYSQLstore = require('express-mysql-session')(session);
+
+// var options = {
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASS,
+//     database: process.env.DB_SCHEMA
+// };
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+
+passport.serializeUser((user_id, done) => {
+    done(null, user_id);
+});
+
+passport.deserializeUser((user_id, done) => {
+    done(null, user_id);
+});
 
 var userController = {
 
@@ -45,11 +63,18 @@ var userController = {
                     }
                     else {
                         console.log("Registration complete!");
-                        res.send("Registration complete!");
+                        // res.send("Registration complete!");
                     }
-                    } // end query callback
-                ); //end query
-            });
+                    db.query('SELECT LAST_INSERT_ID() as user_id FROM voters', (error, results, fields) => {
+                        const user_id = results[0];
+                        console.log(user_id);
+                        req.login(user_id, (err) => {
+                            res.redirect('../../dashboard.html')
+                        }); //end session login
+                    }); // end id query
+                    } // end register query callback
+                ); // end register query
+            }); // end bcrypt
         } // end else
     }, // end register function
 
