@@ -21,6 +21,7 @@ passport.deserializeUser((user_id, done) => {
     done(null, user_id);
 });
 
+
 var userController = {
 
     // register function pulls parameters from request body

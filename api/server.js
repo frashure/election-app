@@ -8,8 +8,10 @@ const ENV = require('dotenv').config();
 var bodyParser = require('body-parser');
 const session = require('express-session');
 const MYSQLstore = require('express-mysql-session')(session);
-const uid = require('uuid/v4');
+// const uid = require('uuid/v4');
 var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt');
 
 app.listen(port);
 console.log('Election App RESTful API server started on: ' + port);
@@ -33,7 +35,7 @@ var storeSession = new MYSQLstore(options);
 
 // Use express-session
 app.use(session({
-    secret: 'LhtXfJddcfvVs06syqZQBJ1x8nhW3e74',
+    secret: process.env.sessionSecret,
     store: storeSession,
     resave: false,
     saveUninitialized: false,
@@ -41,6 +43,33 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Configure passport-local
+passport.use(new LocalStrategy({passReqToCallback: false, usernameField: 'email'}, function(email, password, done) {
+    console.log(email);
+    console.log(password);
+    const db = require('./models/dbconnection.js');
+
+    db.query('SELECT voter_id, voter_password FROM voters WHERE email = ?', [email], (err, results) => {
+        console.log(results[0]);
+        if (err) {
+            done(err);
+        }
+        if (results.length === 0) {
+            done(null, false);
+        }
+        const hash = results[0].voter_password.toString();
+        console.log(hash);
+        bcrypt.compare(password, hash, (err, response) => {
+            if (response === true) {
+                return done(null, {user_id: results[0].voter_id});
+            }
+            else {
+                return done(null, false);
+            }
+        });
+    });
+}));
 
 
 // R O U T E S
