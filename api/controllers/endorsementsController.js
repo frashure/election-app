@@ -1,4 +1,4 @@
-const db = require('../controllers/endorsementsController.js');
+const db = require('../models/dbconnection.js');
 
 var endorsementsController = {
 
@@ -8,17 +8,52 @@ var endorsementsController = {
                 res.send(err);
                 console.log(err);
             }
-            res.json(reults);
+            res.json(results);
         });
     }, // end getEndorsements
 
     getEndorsementByCandidate: (req, res) => {
-        var results = deb.query(`SELECT * FROM endorsements WHERE candidate_id = ${req.body.candidate_id}`, (err, results) => {
+        var results = db.query(`SELECT * FROM endorsements WHERE candidate_id = ?`, [req.params.id], (err, results) => {
             if (err) {
                 res.send(err);
                 console.log(err);
             }
             res.json(results);
+        })
+    }, // end getEndorsementsByCandidate
+
+    getEndorsementsByUser: (req, res) => {
+        var results = db.query(`SELECT * FROM endorsements WHERE voter_id = ?`, [req.params.id], (err, results) => {
+            if (err) {
+                res.send(err);
+                console.log(err);
+            }
+            res.json(results);
+        })
+    }, // end getEndorsementsByUser
+
+    postEndorsement: (req, res) => {
+        let date = new Date();
+        var results = db.query(`INSERT INTO endorsements (voter_id, candidate_id, dateEndorsed) VALUES (?, ?, ?)`,[req.body.voter_id, req.body.candidate_id, date], (err, results) => {
+            if (err) {
+                res.send(err);
+                console.log(err);
+            }
+            else {
+                res.json(results);
+            }
+        })
+    }, // end getEndorsementsByCandidate
+
+    deleteEndorsement: (req, res) => {
+        var results = db.query(`DELETE FROM endorsements WHERE voter_id = ? AND candidate_id = ?`, [req.body.voter_id, req.body.candidate_id], (err, results) => {
+            if (err) {
+                res.send(err);
+                console.log(err);
+            }
+            else {
+                res.json(results);
+            }
         })
     }
 

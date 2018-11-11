@@ -24,7 +24,7 @@ var candidateController = {
     }, // End getAllCandidates
 
     getCandidatesById: function(req, res) {
-        var results = db.query(`SELECT * FROM candidates WHERE candidate_id = ${req.params.id}`, function (err, results) {
+        var results = db.query(`SELECT * FROM candidates WHERE candidate_id = ?`, [req.params.id], function (err, results) {
             if (err) {
                 console.log(err);
             }
@@ -43,7 +43,7 @@ var candidateController = {
     }, // End getCandidatesById
 
     getCandidatesByParty: function (req, res) {
-        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE p.partyName = "${req.params.party}" ORDER BY c.lName`, function (err, results) {
+        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE p.partyName = "?" ORDER BY c.lName`, [req.params.party], function (err, results) {
             if (err) {
                 console.log(err)
             }
