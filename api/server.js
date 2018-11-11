@@ -56,18 +56,22 @@ passport.use(new LocalStrategy({passReqToCallback: false, usernameField: 'email'
             done(err);
         }
         if (results.length === 0) {
+            console.log('User not found')
             done(null, false);
         }
-        const hash = results[0].voter_password.toString();
-        console.log(hash);
-        bcrypt.compare(password, hash, (err, response) => {
-            if (response === true) {
-                return done(null, {user_id: results[0].voter_id});
-            }
-            else {
-                return done(null, false);
-            }
-        });
+        else {
+            const hash = results[0].voter_password.toString();
+            console.log(hash);
+            bcrypt.compare(password, hash, (err, response) => {
+                if (response === true) {
+                    return done(null, {user_id: results[0].voter_id});
+                }
+                else {
+                    console.log('Incorrect password')
+                    return done(null, false);
+                }
+            });
+        }
     });
 }));
 
