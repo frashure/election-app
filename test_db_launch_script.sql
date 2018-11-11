@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `election_test`.`voters` (
   `date_registered` DATE NOT NULL,
   `fName` VARCHAR(45) NOT NULL,
   `lName` VARCHAR(45) NOT NULL,
-  `party_id` INT(11) NOT NULL,
+  `party_id` INT(11) NULL,
   PRIMARY KEY (`voter_id`),
   INDEX `fk_voters_parties1_idx` (`party_id` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
@@ -87,8 +87,7 @@ CREATE TABLE IF NOT EXISTS `election_test`.`endorsements` (
   INDEX `fk_voters_has_candidates_candidates1_idx` (`candidate_id` ASC),
   INDEX `fk_voters_has_candidates_voters_idx` (`voter_id` ASC),
   PRIMARY KEY (`voter_id`, `candidate_id`),
-  UNIQUE INDEX `voter_id_UNIQUE` (`voter_id` ASC),
-  UNIQUE INDEX `candidate_id_UNIQUE` (`candidate_id` ASC),
+  UNIQUE INDEX `pk_voter_candidate_UNIQUE` (`voter_id`, `candidate_id` ASC),
   CONSTRAINT `fk_voters_has_candidates_candidates1`
     FOREIGN KEY (`candidate_id`)
     REFERENCES `election_test`.`candidates` (`candidate_id`)
