@@ -1,15 +1,5 @@
 const db = require('../models/dbconnection');
 const passport = require('passport');
-// const session = require('express-session');
-// const MYSQLstore = require('express-mysql-session')(session);
-
-// var options = {
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASS,
-//     database: process.env.DB_SCHEMA
-// };
-
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -64,7 +54,6 @@ var userController = {
                     }
                     else {
                         console.log("Registration complete!");
-                        // res.send("Registration complete!");
                     }
                     db.query('SELECT LAST_INSERT_ID() as user_id FROM voters', (error, results, fields) => {
                         const user_id = results[0];
@@ -81,6 +70,9 @@ var userController = {
 
     // login function, pulls params from req body
     login: function (req, res) {
+
+
+
 
         
         
