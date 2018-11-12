@@ -31,7 +31,7 @@ var candidateController = {
     getCandidatesByParty: (req, res) => {
         var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE p.partyName = "?" ORDER BY c.lName`, [req.params.party], (err, results) => {
             if (err) {
-                console.log(err)
+                console.log(err);
             }
             else {
                 res.json(results);

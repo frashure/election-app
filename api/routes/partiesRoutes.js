@@ -2,15 +2,27 @@
 
 const EXPRESS = require('express');
 const ROUTER = EXPRESS.Router();
+const db = require('../models/dbconnection');
+const controller = require('../controllers/partyController');
 
-// Parties GET route
-ROUTER.get('/', (req, res) => {
-  res.send('Parties GET router successful!')
+ROUTER.get('/', controller.getParties);
+
+ROUTER.get('/democratic', (req, res) => {
+  console.log('GET route for Democratic Party');
+  res.send('GET route for Democratic Party');
 });
 
-// Parties DELETE route
-ROUTER.delete('/', (req, res) => {
-  res.send("Parties DELETE router successful!");
+ROUTER.get('/republican', (req, res) => {
+  console.log('GET route for Republican Party');
+  res.send('GET route for Republican Party');
 });
 
+ROUTER.get('/libertarian', (req, res) => {
+  console.log('GET route for Libertarian Party');
+  res.send('GET route for Libertarian Party');
+});
+
+ROUTER.get('/id/:party_id', controller.getPartyById);
+
+ROUTER.get('/name/:party_name', controller.getPartyByName);
 module.exports = ROUTER;
