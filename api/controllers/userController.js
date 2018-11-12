@@ -25,7 +25,7 @@ passport.deserializeUser((user_id, done) => {
 var userController = {
 
     // register function pulls parameters from request body
-    register: function (req, res) {
+    register: (req, res) => {
 
         let email = req.body.email;
         let password = req.body.password;
@@ -64,7 +64,6 @@ var userController = {
                     }
                     else {
                         console.log("Registration complete!");
-                        // res.send("Registration complete!");
                     }
                     db.query('SELECT LAST_INSERT_ID() as user_id FROM voters', (error, results, fields) => {
                         const user_id = results[0];
@@ -80,7 +79,7 @@ var userController = {
     }, // end register function
 
     // login function, pulls params from req body
-    login: function (req, res) {
+    login: (req, res) => {
 
         
         

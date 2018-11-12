@@ -8,14 +8,15 @@ var candidatesController = require('../controllers/candidateController');
 ROUTER.get('/', candidatesController.getAllCandidates);
 
 // GET candidate by ID
-ROUTER.get('/id=:id', candidatesController.getCandidatesById);
+ROUTER.get('/id/:id', candidatesController.getCandidatesById);
 
 // GET all candidates by party
-ROUTER.get('/party=:party', candidatesController.getCandidatesByParty);
+ROUTER.get('/party/:party', candidatesController.getCandidatesByParty);
 
-// Candidates DELETE route
-ROUTER.delete('/', (req, res) => {
-  res.send("Candidates DELETE router successful!");
-});
+// GET all candidates by state
+
+// GET all candidates by office
+
+
 
 module.exports = ROUTER;
