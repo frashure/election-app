@@ -78,6 +78,11 @@ passport.use(new LocalStrategy({passReqToCallback: false, usernameField: 'email'
 
 // R O U T E S
 
+// Return 204 for favicon requests
+app.use('/favicon.ico', (req, res) => {
+    return res.sendStatus(204);
+})
+
 // Serve index.html for requests to root path
 var indexPath = path.join(__dirname, '../src/');
 app.use('/', express.static(indexPath));

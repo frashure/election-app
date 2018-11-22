@@ -37,7 +37,7 @@ function search() {
     }  
     else {
         console.log(partySelection);
-        url = "http://localhost:3000/candidates/party="+partySelection;
+        url = "http://localhost:3000/candidates/party/"+partySelection;
         console.log(url);
     }
 
