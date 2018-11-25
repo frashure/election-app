@@ -70,13 +70,27 @@ var userController = {
 
     // login function, pulls params from req body
     login: (req, res) => {
-
-
-
-
-        
-        
-    } // end login function
+        // Login handled by passport.js in server.js
+    }, // end login function
+    getBallot: (req, res) => {
+        var results = db.query(`SELECT o.office_id, o.legislature_id, o.district, e.type, e.date, ec.candidate_id, ec.isIncumbent
+        FROM
+            user_ballot ub LEFT JOIN offices o
+                ON ub.office_id = o.office_id
+            LEFT JOIN elections e
+                ON o.office_id = e.office_id
+            LEFT JOIN election_candidates ec
+                ON e.election_id = ec.election_id
+        WHERE ub.user_id = ?;`, [req.body.user_id], (err, results) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.json(results);
+            }
+        });
+    } // end getBallot
 }; // end class
 
 module.exports = userController;

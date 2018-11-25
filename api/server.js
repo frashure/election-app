@@ -112,3 +112,7 @@ app.use('/user', users);
 // Pass endorsements related route requests to endorsementsRoutes.js module
 var endorsements = require('./routes/endorsementsRoutes.js');
 app.use('/endorsements', endorsements);
+
+// Pass election related route requests to electionsRoutes module
+var elections = require('./routes/electionsRoutes');
+app.use('/elections', elections);

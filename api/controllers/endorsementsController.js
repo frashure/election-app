@@ -47,6 +47,7 @@ var endorsementsController = {
             }
             else {
                 res.json(results);
+                // res.sendStatus(200);
             }
         })
     }, // end getEndorsementsByCandidate
