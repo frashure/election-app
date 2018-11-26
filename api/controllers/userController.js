@@ -19,10 +19,12 @@ var userController = {
 
         let email = req.body.email;
         let password = req.body.password;
-        let fName = req.body.firstName;
-        let lName = req.body.lastName;
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
         let passwordMatch = req.body.passwordMatch;
-        let dateRegistered = new Date();    
+        let dateRegistered = new Date();
+        let party = "LIB";
+
         
 
         req.check('email', 'Email field cannot be empty.').not().isEmpty();
@@ -47,7 +49,7 @@ var userController = {
         }
         else {
             bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-                db.query('INSERT INTO voters (email, voter_password, date_registered, fName, lName) VALUES (?, ?, ?, ?, ?)', [email, hash, dateRegistered, fName, lName], function(err, results) {
+                db.query('INSERT INTO voters (email, voter_password, date_registered, firstName, lastName, party_id) VALUES (?, ?, ?, ?, ?, ?)', [email, hash, dateRegistered, firstName, lastName, party], function(err, results) {
                     if (err) {
                        console.log(err);
                        res.send(err);
