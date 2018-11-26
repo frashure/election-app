@@ -29,18 +29,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `election_two`.`users`
+-- Table `election_two`.`voters`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `election_two`.`users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `election_two`.`voters` (
+  `voter_id` INT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(45) NOT NULL,
   `lastName` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `date_registered` DATE NOT NULL,
   `password` BINARY(60) NULL,
   `party_id` VARCHAR(3) NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
+  PRIMARY KEY (`voter_id`),
+  UNIQUE INDEX `user_id_UNIQUE` (`voter_id` ASC),
   INDEX `fk_users_parties1_idx` (`party_id` ASC),
   CONSTRAINT `fk_users_parties1`
     FOREIGN KEY (`party_id`)
@@ -132,17 +132,17 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `election_two`.`endorsements` (
   `endorsement_id` INT NOT NULL AUTO_INCREMENT,
   `dateEndorsed` DATE NOT NULL,
-  `user_id` INT NOT NULL,
+  `voter_id` INT NOT NULL,
   `candidate_id` INT NOT NULL,
   `election_id` INT NOT NULL,
   PRIMARY KEY (`endorsement_id`),
   UNIQUE INDEX `endorsement_id_UNIQUE` (`endorsement_id` ASC),
-  INDEX `fk_endorsements_users1_idx` (`user_id` ASC),
+  INDEX `fk_endorsements_users1_idx` (`voter_id` ASC),
   INDEX `fk_endorsements_candidates1_idx` (`candidate_id` ASC),
   INDEX `fk_endorsements_elections1_idx` (`election_id` ASC),
   CONSTRAINT `fk_endorsements_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `election_two`.`users` (`user_id`)
+    FOREIGN KEY (`voter_id`)
+    REFERENCES `election_two`.`voters` (`voter_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_endorsements_candidates1`
@@ -185,18 +185,42 @@ ENGINE = InnoDB;
 -- Table `election_two`.`user_ballot`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `election_two`.`user_ballot` (
-  `user_id` INT NOT NULL,
+  `voter_id` INT NOT NULL,
   `office_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `office_id`),
+  PRIMARY KEY (`voter_id`, `office_id`),
   INDEX `fk_user_ballot_offices1_idx` (`office_id` ASC),
   CONSTRAINT `fk_user_ballot_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `election_two`.`users` (`user_id`)
+    FOREIGN KEY (`voter_id`)
+    REFERENCES `election_two`.`voters` (`voter_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_ballot_offices1`
     FOREIGN KEY (`office_id`)
     REFERENCES `election_two`.`offices` (`office_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `election_two`.`daily_poll`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `election_two`.`daily_poll` (
+  `poll_date` DATETIME NOT NULL DEFAULT NOW(),
+  `election_id` INT NOT NULL,
+  `candidate_id` INT NOT NULL,
+  `num_endorsements` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`poll_date`, `election_id`, `candidate_id`),
+  INDEX `fk_daily_poll_elections1_idx` (`election_id` ASC),
+  INDEX `fk_daily_poll_candidates1_idx` (`candidate_id` ASC),
+  CONSTRAINT `fk_daily_poll_elections1`
+    FOREIGN KEY (`election_id`)
+    REFERENCES `election_two`.`elections` (`election_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_daily_poll_candidates1`
+    FOREIGN KEY (`candidate_id`)
+    REFERENCES `election_two`.`candidates` (`candidate_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -288,9 +312,13 @@ INSERT INTO `election_two`.`election_candidates` (`candidate_id`, `election_id`,
 
 COMMIT;
 
---- Create View for daily logging of support for candidates
-CREATE VIEW support_logger AS
-SELECT date(), candidate_id, election_id, COUNT(user_id)
-FROM endorsements 
-GROUP BY election_id, candidate_id
+
+-- CREATE POLL LOGGING EVENT
+CREATE EVENT poll_logger
+ON SCHEDULE EVERY 1 DAY
+DO 
+INSERT INTO daily_poll (election_id, candidate_id, num_endorsements)
+  SELECT election_id, candidate_id, count(voter_id)
+  FROM endorsements
+  GROUP BY election_id, candidate_id
 ;
