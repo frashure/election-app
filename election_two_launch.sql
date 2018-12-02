@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `election_two`.`voters` (
   `lastName` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `date_registered` DATE NOT NULL,
-  `password` BINARY(60) NULL,
+  `voter_password` BINARY(60) NULL,
   `party_id` VARCHAR(3) NOT NULL,
   PRIMARY KEY (`voter_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`voter_id` ASC),
