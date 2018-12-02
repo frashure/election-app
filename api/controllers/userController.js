@@ -2,6 +2,7 @@ const db = require('../models/dbconnection');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+var LocalStrategy = require('passport-local').Strategy;
 
 passport.serializeUser((user_id, done) => {
     done(null, user_id);
@@ -23,7 +24,7 @@ var userController = {
         let lastName = req.body.lastName;
         let passwordMatch = req.body.passwordMatch;
         let dateRegistered = new Date();
-        let party = "LIB";
+        let party = "IND";
 
         
 
@@ -40,15 +41,14 @@ var userController = {
 
         if (errors) {
             console.log(errors);
-            res.send(errors);
             console.log(req.body.password);
             console.log(password);
             console.log(req.body.email);
             console.log(email);
-
+            res.send(errors);
         }
         else {
-            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+            bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                 db.query('INSERT INTO voters (email, voter_password, date_registered, firstName, lastName, party_id) VALUES (?, ?, ?, ?, ?, ?)', [email, hash, dateRegistered, firstName, lastName, party], function(err, results) {
                     if (err) {
                        console.log(err);

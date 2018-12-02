@@ -45,7 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Configure passport-local
-passport.use(new LocalStrategy({passReqToCallback: false, usernameField: 'email'}, function(email, password, done) {
+passport.use('local', new LocalStrategy({passReqToCallback: false, usernameField: 'email'}, function(email, password, done) {
     console.log(email);
     console.log(password);
     const db = require('./models/dbconnection.js');
