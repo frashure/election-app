@@ -12,6 +12,9 @@ const MYSQLstore = require('express-mysql-session')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
+var helmet = require('helmet');
+
+app.use(helmet());
 
 app.listen(port);
 console.log('Election App RESTful API server started on: ' + port);
