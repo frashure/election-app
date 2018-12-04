@@ -5,7 +5,11 @@ var candidateController = {
 
     // Get all candidates
     getAllCandidates: (req, res) => {
-        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id ORDER BY c.lastName`, (err, results) => {
+        var results = db.query(`SELECT * FROM candidates c 
+        LEFT JOIN election_candidates ec
+        ON c.candidate_id = ec.candidate_id
+        LEFT JOIN parties p ON c.party_id = p.party_id
+        ORDER BY c.lastName`, (err, results) => {
             if (err) {
                 console.log(err);
             }
@@ -29,7 +33,15 @@ var candidateController = {
     }, // End getCandidatesById
 
     getCandidatesByParty: (req, res) => {
-        var results = db.query(`SELECT * FROM candidates c LEFT JOIN parties p ON c.party_id = p.party_id WHERE partyName = ? ORDER BY c.lastName`, [req.params.party], (err, results) => {
+        var results = db.query(`SELECT * FROM
+            candidates c
+            LEFT JOIN election_candidates ec
+            ON ec.candidate_id = c.candidate_id
+            LEFT JOIN parties p
+            ON c.party_id = p.party_id
+            WHERE p.name = ?
+            ORDER BY c.lastName`,
+            [req.params.party], (err, results) => {
             if (err) {
                 console.log(err);
             }
