@@ -74,6 +74,17 @@ var userController = {
     login: (req, res) => {
         // Login handled by passport.js in server.js
     }, // end login function
+
+    isLoggedIn: (req, res, next) => {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        else {
+            res.status(400).json({'message': 'Access denied'});
+        }
+    },
+
+
     getBallot: (req, res) => {
         var results = db.query(`SELECT o.office_id, o.legislature_id, o.district, e.type, e.date, ec.candidate_id, ec.isIncumbent
         FROM

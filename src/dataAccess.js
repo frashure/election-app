@@ -4,19 +4,36 @@ var resultsContainer = document.createElement("div");
 resultsContainer.className = "results-container";
 mainText.appendChild(resultsContainer);
 
-var url = "";
 
-var endorseOnClick = function() {
+
+function endorseOnClick() {
+
+    var requestEndorsements = new XMLHttpRequest();
+    var endorseUrl = "http://localhost:3000/endorsements/users";
+    var method = "";
+    var candidate_id = this.parentElement.id;
+    var election_id = this.parentElement.getAttribute("data-election_id");
+
     if (this.className == "endorseBtn") {
-    this.className = "endorseBtnClicked";
-    this.innerHTML = "Endorsed";
-    console.log("Candidate endorsed!")
+      method = "POST";
+      this.className = "endorseBtnClicked";
+      this.innerHTML = "Endorsed";
+      console.log("Candidate endorsed!");
     }
     else {
+      method = "DELETE";
       this.className = "endorseBtn";
       this.innerHTML = "Endorse";
-      console.log("Candidate endorsement removed!")
+      console.log("Candidate endorsement removed!");
     }
+
+    requestEndorsements.open(method, endorseUrl);
+    requestEndorsements.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    requestEndorsements.responseType = 'json';
+    var payload = "candidate_id="+candidate_id+"&election_id="+election_id;
+    requestEndorsements.send(payload);
+    console.log("Candidate id = " + candidate_id + " Election id = " + election_id);
+    console.log(requestEndorsements.response);
   }
 
 function search() {
@@ -30,40 +47,44 @@ function search() {
     var partySelection = document.getElementById("party-selector").value;
     console.log("Party: ",partySelection);
 
+    var listUrl = "";
+
     if (partySelection == "All") {
         console.log(partySelection);
-        url = "http://localhost:3000/candidates";
-        console.log(url);
+        listUrl = "http://localhost:3000/candidates";
+        console.log(listUrl);
     }  
     else {
         console.log(partySelection);
-        url = "http://localhost:3000/candidates/party/"+partySelection;
-        console.log(url);
+        listUrl = "http://localhost:3000/candidates/party/"+partySelection;
+        console.log(listUrl);
     }
 
 
     console.log("Retreiving information from database...");
 
-    var request = new XMLHttpRequest();
+    var requestCandidates = new XMLHttpRequest();
 
-    request.open('GET', url);
-    request.responseType = 'json';
-    request.onload = function() {
+    requestCandidates.open('GET', listUrl);
+    requestCandidates.responseType = 'json';
+    requestCandidates.onload = function() {
 
-        if (request.status >= 200 && request.status < 400) {
-            console.log(request.status);
+        if (requestCandidates.status >= 200 && requestCandidates.status < 400) {
+            console.log(requestCandidates.status);
         } else {
-            console.log('ERROR: STATUS ' + request.status);
+            console.log('ERROR: STATUS ' + requestCandidates.status);
         }
         var resultset = this.response;
         console.log("Onload");
 
         resultset.forEach(candidate => {
             var card = document.createElement("div");
-            card.className = "candidate-card " + candidate.partyName + "-card";
-            var cardHeader = document.createTextNode(candidate.fName + " " + candidate.lName);
+            card.id = candidate.candidate_id;
+            card.setAttribute("data-election_id", candidate.election_id);
+            card.className = "candidate-card " + candidate.name + "-card";
+            var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
             cardHeader.className = "card-header";
-            var cardText = document.createTextNode("Party: " + candidate.partyName);
+            var cardText = document.createTextNode("Party: " + candidate.name);
             cardText.className = "card-text";
             card.appendChild(cardHeader);
             var lineBreak = document.createElement("br");
@@ -77,9 +98,19 @@ function search() {
     
             endorseBtn.addEventListener('click', endorseOnClick);
             console.log("Event listener added to endorseBtn."); 
+            console.log(candidate.election_id);
+            console.log(card.getAttribute("data-election_id"));
+
+            // compare candidate to list of endorsed candidates by user,
+            // if candidate in that result set, change endorsement button class
+            // ..... do that here
         });
 
-    }
-    request.send();
 
-  }
+    } // end onload
+    requestCandidates.send();
+
+
+
+
+  } // end search function
