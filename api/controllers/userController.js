@@ -4,13 +4,6 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var LocalStrategy = require('passport-local').Strategy;
 
-passport.serializeUser((user_id, done) => {
-    done(null, user_id);
-});
-
-passport.deserializeUser((user_id, done) => {
-    done(null, user_id);
-});
 
 
 var userController = {
@@ -57,10 +50,10 @@ var userController = {
                     else {
                         console.log("Registration complete!");
                     }
-                    db.query('SELECT LAST_INSERT_ID() as user_id FROM voters', (error, results, fields) => {
-                        const user_id = results[0];
-                        console.log(user_id);
-                        req.login(user_id, (err) => {
+                    db.query('SELECT LAST_INSERT_ID() as id FROM voters', (error, results, fields) => {
+                        const id = results[0];
+                        console.log(id);
+                        req.login(id, (err) => {
                             res.redirect('../../dashboard.html')
                         }); //end session login
                     }); // end id query

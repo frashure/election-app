@@ -32,12 +32,13 @@ var endorsementsController = {
         ON e.candidate_id = c.candidate_id
         LEFT JOIN parties p
         ON c.party_id = p.party_id
-        WHERE voter_id = ?`, [req.user.user_id], (err, results) => {
+        WHERE voter_id = ?`, [req.user.voter_id], (err, results) => {
             if (err) {
                 console.log(err);
                 res.send(err);
             }
             else {
+                console.log(req.user);
                 res.json(results);
             }
         })
@@ -57,9 +58,10 @@ var endorsementsController = {
 
     postEndorsement: (req, res) => {
         let date = new Date();
-        var results = db.query(`INSERT INTO endorsements (voter_id, candidate_id, election_id, dateEndorsed) VALUES (?, ?, ?, ?)`,[req.user.user_id, req.body.candidate_id, req.body.election_id, date], (err, results) => {
+        var results = db.query(`INSERT INTO endorsements (voter_id, candidate_id, election_id, dateEndorsed) VALUES (?, ?, ?, ?)`,[req.user.voter_id, req.body.candidate_id, req.body.election_id, date], (err, results) => {
             if (err) {
                 console.log(err);
+                console.log(req.user);
                 res.send(err);
             }
             else {
@@ -70,7 +72,7 @@ var endorsementsController = {
     }, // end getEndorsementsByCandidate
 
     deleteEndorsement: (req, res) => {
-        var results = db.query(`DELETE FROM endorsements WHERE voter_id = ? AND candidate_id = ?`, [req.user.user_id, req.body.candidate_id], (err, results) => {
+        var results = db.query(`DELETE FROM endorsements WHERE voter_id = ? AND candidate_id = ?`, [req.user.id, req.body.candidate_id], (err, results) => {
             if (err) {
                 console.log(err);
                 res.send(err);
