@@ -13,6 +13,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 var helmet = require('helmet');
+var db = require('./models/dbconnection');
 
 app.use(helmet());
 
@@ -67,7 +68,8 @@ passport.use('local', new LocalStrategy({passReqToCallback: false, usernameField
             console.log(hash);
             bcrypt.compare(password, hash, (err, response) => {
                 if (response === true) {
-                    return done(null, {user_id: results[0].voter_id});
+                    console.log(results);
+                    return done(null, {"id": results[0].voter_id});
                 }
                 else {
                     console.log('Incorrect password')
@@ -77,6 +79,22 @@ passport.use('local', new LocalStrategy({passReqToCallback: false, usernameField
         }
     });
 }));
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+    db.query(`SELECT * FROM voters where voter_id = ?`, [user.id], (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            done(null, rows[0]);
+        }
+    });
+});
+
 
 
 // R O U T E S
