@@ -4,8 +4,26 @@ var profile = document.getElementById('user-info');
 
 
 function buildProfile() {
-  var reqProf = new XMLHttpRequest():
-  reqProf.open('GET', http://localhost:3000/users/getUser)
+  var reqProf = new XMLHttpRequest();
+  reqProf.open('GET', "http://localhost:3000/user");
+  reqProf.responseType = 'json';
+  reqProf.onload = () => {
+    if (reqProf.status >= 200 && reqProf.status <400) {
+      console.log(reqProf.response);
+      let resultSet = reqProf.response;
+      var firstName = resultSet[0].firstName;
+      var lastName = resultSet[0].lastName;
+      var party = resultSet[0].party_id;
+
+      profile.innerHTML = "Name: " + firstName + " " + lastName;
+    }
+    else {
+      console.log('ERROR: STATUS ' + reqProf.status);
+      console.log(reqProf.response);
+    }
+  };
+  reqProf.send();
+
 }
 
 function buildEndorsements() {
@@ -19,26 +37,35 @@ function buildEndorsements() {
     else {
       console.log('ERROR: STATUS ' + requestEndorsements.status);
     }
-    var resultset = requestEndorsements.response;
-    var welcomeMessage = document.getElementById('user-info');
-    welcomeMessage.innerHTML = "You have successfully logged in. Your endorsed candidates:";
-    resultset.forEach(candidate => {
-      var card = document.createElement("div");
-            card.id = candidate.candidate_id;
-            card.setAttribute("data-election_id", candidate.election_id);
-            card.className = "candidate-card " + candidate.name + "-card";
-            var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
-            cardHeader.className = "card-header";
-            var cardText = document.createTextNode("Party: " + candidate.name);
-            cardText.className = "card-text";
-            card.appendChild(cardHeader);
-            var lineBreak = document.createElement("br");
-            card.appendChild(lineBreak);
-            card.appendChild(cardText);
-            mainText.appendChild(card);
-    })
+    var resultSet = requestEndorsements.response;
+    if (resultSet.length == 0) {
+      var noEndorsements = document.createElement('div');
+      noEndorsements.innerHTML = "You have not endorsed any candidates.";
+      mainText.appendChild(noEndorsements);
+    }
+    else {
+      resultSet.forEach(candidate => {
+        var card = document.createElement("div");
+        card.id = candidate.candidate_id;
+        card.setAttribute("data-election_id", candidate.election_id);
+        card.className = "candidate-card " + candidate.name + "-card";
+        var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
+        cardHeader.className = "card-header";
+        var cardText = document.createTextNode("Party: " + candidate.name);
+        cardText.className = "card-text";
+        card.appendChild(cardHeader);
+        var lineBreak = document.createElement("br");
+        card.appendChild(lineBreak);
+        card.appendChild(cardText);
+        mainText.appendChild(card);
+      });
+    }
   };
   requestEndorsements.send();
 }
 
-window.onload = buildEndorsements();
+// window.onload = buildEndorsements();
+// window.onload = buildProfile();
+
+window.addEventListener('load', buildProfile());
+window.addEventListener('load', buildEndorsements());
