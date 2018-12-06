@@ -3,6 +3,11 @@ var userName = document.getElementById('user-name');
 var profile = document.getElementById('user-info');
 
 
+function buildProfile() {
+  var reqProf = new XMLHttpRequest():
+  reqProf.open('GET', http://localhost:3000/users/getUser)
+}
+
 function buildEndorsements() {
   var requestEndorsements = new XMLHttpRequest();
   requestEndorsements.open('GET', "http://localhost:3000/endorsements/users");

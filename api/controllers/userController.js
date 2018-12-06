@@ -77,6 +77,10 @@ var userController = {
         }
     },
 
+    getUser: (req, res) => {
+        
+    }
+
 
     getBallot: (req, res) => {
         var results = db.query(`SELECT o.office_id, o.legislature_id, o.district, e.type, e.date, ec.candidate_id, ec.isIncumbent
