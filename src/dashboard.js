@@ -64,8 +64,5 @@ function buildEndorsements() {
   requestEndorsements.send();
 }
 
-// window.onload = buildEndorsements();
-// window.onload = buildProfile();
-
 window.addEventListener('load', buildProfile());
 window.addEventListener('load', buildEndorsements());
