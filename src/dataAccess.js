@@ -34,9 +34,23 @@ function endorseOnClick() {
     requestEndorsements.send(payload);
     console.log("Candidate id = " + candidate_id + " Election id = " + election_id);
     console.log(requestEndorsements.response);
-  }
+}; // end endorseOnClick
+
 
 function search() {
+
+    // Retrieve list of endorsed candidates to format endorseBtn
+    var endorsedList = retrieveEndorsements();
+    function retrieveEndorsements() {
+    var requestEndorsementList = new XMLHttpRequest();
+    requestEndorsementList.open('GET', "http://localhost:3000/endorsements/users");
+    requestEndorsementList.responseType = 'json';
+    requestEndorsementList.onload = () => {
+        endorsedList = requestEndorsementList.response;
+        console.log(endorsedList);
+    }
+    request.send();
+} // end retrieveEndorsements;
 
     // Remove any existing results container children
     while (resultsContainer.firstChild) {
@@ -103,14 +117,12 @@ function search() {
 
             // compare candidate to list of endorsed candidates by user,
             // if candidate in that result set, change endorsement button class
-            // ..... do that here
+            if (endorsedList.some(c => c.candidate_id === candidate.candidate_id)) {
+                endorseBtn.className = "endorseBtnClicked";
+                endorseBtn.innerHTML = "Endorsed";
+            }
+            
         });
-
-
     } // end onload
     requestCandidates.send();
-
-
-
-
   } // end search function
