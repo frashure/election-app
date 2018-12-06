@@ -72,7 +72,7 @@ var endorsementsController = {
     }, // end getEndorsementsByCandidate
 
     deleteEndorsement: (req, res) => {
-        var results = db.query(`DELETE FROM endorsements WHERE voter_id = ? AND candidate_id = ?`, [req.user.id, req.body.candidate_id], (err, results) => {
+        var results = db.query(`DELETE FROM endorsements WHERE voter_id = ? AND candidate_id = ?`, [req.user.voter_id, req.body.candidate_id], (err, results) => {
             if (err) {
                 console.log(err);
                 res.send(err);
