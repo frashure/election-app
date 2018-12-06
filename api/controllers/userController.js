@@ -77,9 +77,18 @@ var userController = {
         }
     },
 
-    getUser: (req, res) => {
-        
-    }
+    getUserInfo: (req, res) => {
+        var results = db.query(`SELECT firstName, lastName, party_id FROM voters WHERE voter_id = ?`, [req.user.voter_id], (err, results) => {
+            if (err) {
+                console.log(err);
+                console.log(results);
+                res.send(err);
+            }
+            else {
+                res.json(results);
+            }
+        })
+    },
 
 
     getBallot: (req, res) => {
