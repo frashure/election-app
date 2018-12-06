@@ -10,6 +10,8 @@ ROUTER.post('/register', controller.register);
 ROUTER.get('/login', (req, res) => {res.redirect('../login.html')});
 ROUTER.post('/login', passport.authenticate('local', {successRedirect:'/dashboard.html', failureRedirect: '/user/login'}));
 
+ROUTER.get('/', controller.isLoggedIn, controller.getUserInfo);
+
 ROUTER.get('/logout', (req, res) => {
     req.logout();
     req.session.destroy();
