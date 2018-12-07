@@ -5,6 +5,9 @@ resultsContainer.className = "results-container";
 mainText.appendChild(resultsContainer);
 
 
+var endorsedList;
+var isLoggedIn;
+
 
 function endorseOnClick() {
 
@@ -37,92 +40,116 @@ function endorseOnClick() {
 }; // end endorseOnClick
 
 
-function search() {
+function retrieveEndorsements() {
 
-    // Retrieve list of endorsed candidates to format endorseBtn
-    var endorsedList = retrieveEndorsements();
-    function retrieveEndorsements() {
     var requestEndorsementList = new XMLHttpRequest();
     requestEndorsementList.open('GET', "http://localhost:3000/endorsements/users");
     requestEndorsementList.responseType = 'json';
     requestEndorsementList.onload = () => {
-        endorsedList = requestEndorsementList.response;
-        console.log(endorsedList);
-    }
-    request.send();
-} // end retrieveEndorsements;
-
-    // Remove any existing results container children
-    while (resultsContainer.firstChild) {
-        resultsContainer.removeChild(resultsContainer.firstChild);
-    }
-
-    // Capture party value from selector
-    var partySelection = document.getElementById("party-selector").value;
-    console.log("Party: ",partySelection);
-
-    var listUrl = "";
-
-    if (partySelection == "All") {
-        console.log(partySelection);
-        listUrl = "http://localhost:3000/candidates";
-        console.log(listUrl);
-    }  
-    else {
-        console.log(partySelection);
-        listUrl = "http://localhost:3000/candidates/party/"+partySelection;
-        console.log(listUrl);
-    }
-
-
-    console.log("Retreiving information from database...");
-
-    var requestCandidates = new XMLHttpRequest();
-
-    requestCandidates.open('GET', listUrl);
-    requestCandidates.responseType = 'json';
-    requestCandidates.onload = function() {
-
-        if (requestCandidates.status >= 200 && requestCandidates.status < 400) {
-            console.log(requestCandidates.status);
-        } else {
-            console.log('ERROR: STATUS ' + requestCandidates.status);
+        if (requestEndorsementList.status == 401) {
+            endorsedList = [];
+            isLoggedIn = false;
+            console.log(isLoggedIn);
         }
-        var resultset = this.response;
-        console.log("Onload");
+        else {
+            endorsedList = requestEndorsementList.response;
+            console.log("List: " + endorsedList);
+            console.log("Request status: " + requestEndorsementList.status);
+            isloggedIn = true;
+            console.log(isLoggedIn);
+            console.log(typeof(isLoggedIn));
+        }
+    }
+    requestEndorsementList.send();
 
-        resultset.forEach(candidate => {
-            var card = document.createElement("div");
-            card.id = candidate.candidate_id;
-            card.setAttribute("data-election_id", candidate.election_id);
-            card.className = "candidate-card " + candidate.name + "-card";
-            var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
-            cardHeader.className = "card-header";
-            var cardText = document.createTextNode("Party: " + candidate.name);
-            cardText.className = "card-text";
-            card.appendChild(cardHeader);
-            var lineBreak = document.createElement("br");
-            card.appendChild(lineBreak);
-            card.appendChild(cardText);
+    buildCandidateList();
+} // end retrieveEndorsements;  
+
+
+function buildCandidateList() {
+    // Remove any existing results container children
+while (resultsContainer.firstChild) {
+    resultsContainer.removeChild(resultsContainer.firstChild);
+}
+
+// Capture party value from selector
+var partySelection = document.getElementById("party-selector").value;
+console.log("Party: ",partySelection);
+
+var listUrl = "";
+
+if (partySelection == "All") {
+    console.log(partySelection);
+    listUrl = "http://localhost:3000/candidates";
+    console.log(listUrl);
+}  
+else {
+    console.log(partySelection);
+    listUrl = "http://localhost:3000/candidates/party/"+partySelection;
+    console.log(listUrl);
+}
+
+
+console.log("Retreiving information from database...");
+
+var requestCandidates = new XMLHttpRequest();
+
+requestCandidates.open('GET', listUrl);
+requestCandidates.responseType = 'json';
+requestCandidates.onload = () => {
+
+    if (requestCandidates.status >= 200 && requestCandidates.status < 400) {
+        console.log('requestCandidates status: ' + requestCandidates.status);
+    } else {
+        console.log('ERROR: STATUS ' + requestCandidates.status);
+    }
+    var resultset = requestCandidates.response;
+    console.log(requestCandidates.response);
+
+    resultset.forEach(candidate => {
+        var card = document.createElement("div");
+        card.id = candidate.candidate_id;
+        card.setAttribute("data-election_id", candidate.election_id);
+        card.className = "candidate-card " + candidate.name + "-card";
+        var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
+        cardHeader.className = "card-header";
+        var cardText = document.createTextNode("Party: " + candidate.name);
+        cardText.className = "card-text";
+        card.appendChild(cardHeader);
+        var lineBreak = document.createElement("br");
+        card.appendChild(lineBreak);
+        card.appendChild(cardText);
+
+        console.log('Is logged in: ' + isLoggedIn);
+        if (isLoggedIn) {
             var endorseBtn = document.createElement("a");
             endorseBtn.className = "endorseBtn";
             endorseBtn.innerHTML = "Endorse";
             card.appendChild(endorseBtn);
-            resultsContainer.appendChild(card);
-    
             endorseBtn.addEventListener('click', endorseOnClick);
-            console.log("Event listener added to endorseBtn."); 
-            console.log(candidate.election_id);
-            console.log(card.getAttribute("data-election_id"));
+        }
 
-            // compare candidate to list of endorsed candidates by user,
-            // if candidate in that result set, change endorsement button class
-            if (endorsedList.some(c => c.candidate_id === candidate.candidate_id)) {
-                endorseBtn.className = "endorseBtnClicked";
-                endorseBtn.innerHTML = "Endorsed";
-            }
-            
-        });
-    } // end onload
-    requestCandidates.send();
+        resultsContainer.appendChild(card);
+
+
+        console.log("Event listener added to endorseBtn."); 
+        console.log(candidate.election_id);
+        console.log(card.getAttribute("data-election_id"));
+
+        // compare candidate to list of endorsed candidates by user,
+        // if candidate in that result set, change endorsement button class
+        if (endorsedList.some(c => c.candidate_id === candidate.candidate_id)) {
+            endorseBtn.className = "endorseBtnClicked";
+            endorseBtn.innerHTML = "Endorsed";
+        }
+        
+    });
+} // end onload
+requestCandidates.send();
+} // end buildCandidateList 
+
+function search() {
+
+    retrieveEndorsements();
+
   } // end search function
