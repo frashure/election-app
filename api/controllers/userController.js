@@ -73,7 +73,7 @@ var userController = {
             return next();
         }
         else {
-            res.status(400).json({'message': 'Access denied'});
+            res.status(401).json({'message': 'Access denied'});
         }
     },
 
