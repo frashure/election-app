@@ -8,7 +8,7 @@ values
 insert into candidates (firstName, lastName, isActive, party_id)
 values 
 ('John', 'Delaney', 1, 'DEM'),
-('Richard', 'Oeda', 1, 'DEM'),
+('Richard', 'Ojeda', 1, 'DEM'),
 ('Micheal', 'Arth', 1, 'DEM'),
 ('Ken', 'Nwadike', 1, 'DEM'),
 ('Bobby', 'Well', 1, 'DEM'),
