@@ -53,11 +53,7 @@ function retrieveEndorsements() {
         }
         else {
             endorsedList = requestEndorsementList.response;
-            console.log("List: " + endorsedList);
-            console.log("Request status: " + requestEndorsementList.status);
             isLoggedIn = true;
-            console.log(isLoggedIn);
-            console.log(typeof(isLoggedIn));
         }
     }
     requestEndorsementList.send();
@@ -75,14 +71,11 @@ function buildCandidateList() {
 
     // Capture party value from selector
     var partySelection = document.getElementById("party-selector").value;
-    console.log("Party: ",partySelection);
 
     var listUrl = "";
 
     if (partySelection == "All") {
-        console.log(partySelection);
         listUrl = "http://localhost:3000/candidates";
-        console.log(listUrl);
     }  
     else {
         console.log(partySelection);
@@ -90,8 +83,6 @@ function buildCandidateList() {
         console.log(listUrl);
     }
 
-
-    console.log("Retreiving information from database...");
 
     var requestCandidates = new XMLHttpRequest();
 
@@ -103,6 +94,7 @@ function buildCandidateList() {
             console.log('requestCandidates status: ' + requestCandidates.status);
         } else {
             console.log('ERROR: STATUS ' + requestCandidates.status);
+            res.status(500).send();
         }
         var resultset = requestCandidates.response;
         console.log(requestCandidates.response);
@@ -121,7 +113,6 @@ function buildCandidateList() {
             card.appendChild(lineBreak);
             card.appendChild(cardText);
 
-            console.log('Is logged in: ' + isLoggedIn);
             if (isLoggedIn) {
                 var endorseBtn = document.createElement("a");
                 endorseBtn.className = "endorseBtn";
@@ -131,11 +122,6 @@ function buildCandidateList() {
             }
 
             resultsContainer.appendChild(card);
-
-
-            console.log("Event listener added to endorseBtn."); 
-            console.log(candidate.election_id);
-            console.log(card.getAttribute("data-election_id"));
 
             // compare candidate to list of endorsed candidates by user,
             // if candidate in that result set, change endorsement button class
