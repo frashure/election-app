@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
 -- Query: select * from candidates
 LIMIT 0, 1000
