@@ -130,16 +130,14 @@ ENGINE = InnoDB;
 -- Table `election_two`.`endorsements`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `election_two`.`endorsements` (
-  `endorsement_id` INT NOT NULL AUTO_INCREMENT,
   `dateEndorsed` DATE NOT NULL,
   `voter_id` INT NOT NULL,
   `candidate_id` INT NOT NULL,
   `election_id` INT NOT NULL,
-  PRIMARY KEY (`endorsement_id`),
-  UNIQUE INDEX `endorsement_id_UNIQUE` (`endorsement_id` ASC),
   INDEX `fk_endorsements_users1_idx` (`voter_id` ASC),
   INDEX `fk_endorsements_candidates1_idx` (`candidate_id` ASC),
   INDEX `fk_endorsements_elections1_idx` (`election_id` ASC),
+  PRIMARY KEY (`voter_id`, `candidate_id`, `election_id`),
   CONSTRAINT `fk_endorsements_users1`
     FOREIGN KEY (`voter_id`)
     REFERENCES `election_two`.`voters` (`voter_id`)
@@ -249,9 +247,17 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `election_two`;
-INSERT INTO `election_two`.`candidates` (`candidate_id`, `firstName`, `lastName`, `middleName`, `isActive`, `website`, `party_id`) VALUES (DEFAULT, 'Donald', 'Trump', 'J', 1, NULL, 'REP');
-INSERT INTO `election_two`.`candidates` (`candidate_id`, `firstName`, `lastName`, `middleName`, `isActive`, `website`, `party_id`) VALUES (DEFAULT, 'Andrew', 'Yang', NULL, 1, NULL, 'DEM');
-INSERT INTO `election_two`.`candidates` (`candidate_id`, `firstName`, `lastName`, `middleName`, `isActive`, `website`, `party_id`) VALUES (DEFAULT, 'Arvin', 'Vohra', NULL, 1, NULL, 'LIB');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (1,'Donald','Trump','J',1,NULL,'REP');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (2,'Andrew','Yang',NULL,1,NULL,'DEM');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (3,'Arvin','Vohra',NULL,1,NULL,'LIB');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (4,'John','Delaney',NULL,1,NULL,'DEM');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (5,'Richard','Oeda',NULL,1,NULL,'DEM');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (6,'Micheal','Arth',NULL,1,NULL,'DEM');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (7,'Ken','Nwadike',NULL,1,NULL,'DEM');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (8,'Bobby','Well',NULL,1,NULL,'DEM');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (10,'Andrew','Kokesh',NULL,1,NULL,'LIB');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (11,'Vermin','Supreme',NULL,1,NULL,'LIB');
+INSERT INTO `candidates` (`candidate_id`,`firstName`,`lastName`,`middleName`,`isActive`,`website`,`party_id`) VALUES (12,'Jessie','Ventura',NULL,1,NULL,'GRN');
 
 COMMIT;
 
@@ -306,11 +312,20 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `election_two`;
-INSERT INTO `election_two`.`election_candidates` (`candidate_id`, `election_id`, `isIncumbent`) VALUES (1, 1, 1);
-INSERT INTO `election_two`.`election_candidates` (`candidate_id`, `election_id`, `isIncumbent`) VALUES (2, 1, 0);
-INSERT INTO `election_two`.`election_candidates` (`candidate_id`, `election_id`, `isIncumbent`) VALUES (3, 1, 0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (1,1,1);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (2,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (3,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (4,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (5,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (6,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (7,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (8,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (10,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (11,1,0);
+INSERT INTO `election_candidates` (`candidate_id`,`election_id`,`isIncumbent`) VALUES (12,1,0);
 
 COMMIT;
+
 
 
 -- CREATE POLL LOGGING EVENT
