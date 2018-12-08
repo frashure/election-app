@@ -1,17 +1,20 @@
 body {
   font-family: Arial;
   margin: 0;
+  color: black;
 }
 
 nav {
+  position: fixed;
   display: flex;
   padding: 10px;
   justify-content: flex-start;
   height: auto;
   width: 100%;
-  background-color: black;
+  background-color: slategray;
   color: white;
   margin-bottom: 20px;
+  box-shadow: #000000 3px 3px 3px;
 }
 
 nav a {
@@ -21,16 +24,10 @@ nav a {
   vertical-align: middle;
   color: white;
   text-decoration: none;
-  border-bottom: 2px solid black;
 }
 
 nav a:hover {
-  border-bottom: 2px solid white;
-}
-
-nav h1 {
-  background-color: white;
-  color: black;
+  color: navy;
 }
 
 form {
@@ -51,7 +48,8 @@ form {
 
 #main-content {
   color: black;
-  padding: 10px;
+  padding: 20px;
+  padding-top: 120px;
 }
 
 #party-selector {
