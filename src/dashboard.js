@@ -2,6 +2,24 @@ var mainText = document.getElementById('main-content');
 var userName = document.getElementById('user-name');
 var profile = document.getElementById('user-info');
 
+function removeEndorsement() {
+  // add http request to remove endorsement from DB
+  let candidate_id = this.parentElement.id;
+  let election_id = this.parentElement.getAttribute("data-election_id");
+  let payload = "candidate_id="+candidate_id+"&election_id="+election_id;
+  let request = new XMLHttpRequest();
+  request.open('DELETE', "http://localhost:3000/endorsements/users");
+  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  request.responseType = 'json';
+  request.onload = () => {
+    this.parentElement.remove();
+    console.log('Endorsement removed!');
+    console.log(request.response);
+    console.log(request);
+  }
+  request.send(payload);
+}
+
 
 function buildProfile() {
   var reqProf = new XMLHttpRequest();
@@ -57,7 +75,13 @@ function buildEndorsements() {
         var lineBreak = document.createElement("br");
         card.appendChild(lineBreak);
         card.appendChild(cardText);
+        var endorseBtn = document.createElement('a');
+        endorseBtn.className = "endorseBtnClicked";
+        endorseBtn.innerHTML = "Unendorse";
+        card.appendChild(endorseBtn);
         mainText.appendChild(card);
+
+        endorseBtn.addEventListener('click', removeEndorsement);
       });
     }
   };
