@@ -17,8 +17,9 @@ var db = require('./models/dbconnection');
 
 app.use(helmet());
 
-app.listen(port);
-console.log('Election App RESTful API server started on: ' + port);
+app.listen(port, () => {
+    console.log('Election App RESTful API server started on: ' + port);
+});
 
 // Use bodyparser for passing data through forms
 app.use(bodyParser.urlencoded({ extended: false }));
