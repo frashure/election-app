@@ -92,19 +92,22 @@ var userController = {
 
 
     getBallot: (req, res) => {
-        var results = db.query(`SELECT o.office_id, o.legislature_id, c.firstName, c.lastName, l.name AS legis_name, o.district, e.type, e.date, ec.candidate_id, ec.isIncumbent
-        FROM
-            user_ballot ub LEFT JOIN offices o
-                ON ub.office_id = o.office_id
-            LEFT JOIN elections e
-                ON o.office_id = e.office_id
-            LEFT JOIN election_candidates ec
-                ON e.election_id = ec.election_id
-            LEFT JOIN legislatures l
-                ON o.legislature_id = l.legislature_id
-            LEFT JOIN candidates c
-                ON ec.candidate_id = c. candidate_id
-        WHERE ub.voter_id = ?;`, [req.user.voter_id], (err, results) => {
+        var results = db.query(`select c.candidate_id, c.firstName, c.lastName, p.name AS party_name,
+        l.name as legis_name, e.election_id, o.district
+        from candidates c
+            left join parties p	
+                on c.party_id = p.party_id
+            left join election_candidates ec
+                on c.candidate_id = ec.candidate_id
+            left join elections e
+                on ec.election_id = e.election_id
+            left join offices o 
+                on e.office_id = o.office_id
+            left join legislatures l
+                on o.legislature_id = l.legislature_id
+        where e.office_id in (
+        select office_id from user_ballot
+        where voter_id = ?);`, [req.user.voter_id], (err, results) => {
             if (err) {
                 console.log(err);
                 res.send(err);
