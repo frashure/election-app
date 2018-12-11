@@ -1,7 +1,7 @@
 var mainText = document.getElementById('main-content');
 var userName = document.getElementById('user-name');
 var profile = document.getElementById('user-info');
-var endorsedList;
+var endorsedList = [];
 
 function retrieveEndorsements() {
 
@@ -21,7 +21,9 @@ function retrieveEndorsements() {
   }
   requestEndorsementList.send();
 
-  buildCandidateList();
+  buildProfile();
+  buildEndorsements();
+  getBallot();
 } // end retrieveEndorsements;  
 
 
@@ -56,23 +58,23 @@ function endorseOnClick() {
 }; // end endorseOnClick
 
 
-// function removeEndorsement() {
-//   // add http request to remove endorsement from DB
-//   let candidate_id = this.parentElement.id;
-//   let election_id = this.parentElement.getAttribute("data-election_id");
-//   let payload = "candidate_id="+candidate_id+"&election_id="+election_id;
-//   let request = new XMLHttpRequest();
-//   request.open('DELETE', "http://localhost:3000/endorsements/users");
-//   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-//   request.responseType = 'json';
-//   request.onload = () => {
-//     this.parentElement.remove();
-//     console.log('Endorsement removed!');
-//     console.log(request.response);
-//     console.log(request);
-//   }
-//   request.send(payload);
-// }
+function removeEndorsement() {
+  // add http request to remove endorsement from DB
+  let candidate_id = this.parentElement.id;
+  let election_id = this.parentElement.getAttribute("data-election_id");
+  let payload = "candidate_id="+candidate_id+"&election_id="+election_id;
+  let request = new XMLHttpRequest();
+  request.open('DELETE', "http://localhost:3000/endorsements/users");
+  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  request.responseType = 'json';
+  request.onload = () => {
+    this.parentElement.remove();
+    console.log('Endorsement removed!');
+    console.log(request.response);
+    console.log(request);
+  }
+  request.send(payload);
+}
 
 
 function buildProfile() {
@@ -183,7 +185,7 @@ function getBallot() {
         var card = document.createElement("div");
         card.id = candidate.candidate_id;
         card.setAttribute("data-election_id", candidate.election_id);
-        card.className = "candidate-card " + candidate.name + "-card";
+        card.className = "candidate-card " + candidate.party_name + "-card";
 
         if (candidate.district == null) {
           var office = document.createTextNode(candidate.legis_name);
@@ -192,13 +194,17 @@ function getBallot() {
           var office = document.createTextNode(candidate.legis_name + " " + candidate.district);
         }
         card.appendChild(office);
+        let break1 = document.createElement('br');
+        card.appendChild(break1);
         var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
         cardHeader.className = "card-header";
-        var cardText = document.createTextNode("Party: " + candidate.name);
+        var cardText = document.createTextNode("Party: " + candidate.party_name);
         cardText.className = "card-text";
+        let break2 = document.createElement('br');
+        card.appendChild(break2);
         card.appendChild(cardHeader);
-        var lineBreak = document.createElement("br");
-        card.appendChild(lineBreak);
+        let break3 = document.createElement('br');
+        card.appendChild(break3);
         card.appendChild(cardText);
         var endorseBtn = document.createElement('a');
         endorseBtn.className = "endorseBtn";
@@ -219,5 +225,6 @@ function getBallot() {
 }
 
 window.addEventListener('load', buildProfile());
-window.addEventListener('load', buildEndorsements());
-window.addEventListener('load', getBallot());
+window.addEventListener('load', retrieveEndorsements());
+// window.addEventListener('load', buildEndorsements());
+// window.addEventListener('load', getBallot());
