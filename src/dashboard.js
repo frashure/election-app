@@ -68,6 +68,7 @@ function removeEndorsement() {
   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   request.responseType = 'json';
   request.onload = () => {
+    console.log(this);
     this.parentElement.remove();
     console.log('Endorsement removed!');
     console.log(request.response);
@@ -147,7 +148,7 @@ function buildEndorsements() {
         card.appendChild(endorseBtn);
         endorsements.appendChild(card);
 
-        endorseBtn.addEventListener('click', removeEndorsement);
+        endorseBtn.addEventListener('click', checkClick);
       });
     }
   };
@@ -208,7 +209,7 @@ function getBallot() {
         card.appendChild(cardText);
         var endorseBtn = document.createElement('a');
         endorseBtn.className = "endorseBtn";
-        endorseBtn.innerHTML = "Unendorse";
+        endorseBtn.innerHTML = "Endorse";
         card.appendChild(endorseBtn);
         ballot.appendChild(card);
 
@@ -217,12 +218,24 @@ function getBallot() {
           endorseBtn.innerHTML = "Endorsed";
       }
 
-        endorseBtn.addEventListener('click', removeEndorsement);
+        endorseBtn.addEventListener('click', checkClick);
       });
     }
   };
   request.send();
 }
+
+function checkClick() {
+  if (this.className == "endorseBtn") {
+    console.log(this.className);
+    console.log(this.parentElement);
+    endorseOnClick();
+  }
+  if (this.className == "endorseBtnClicked") {
+    console.log(this.className);
+    removeEndorsement();
+  }
+};
 
 window.addEventListener('load', buildProfile());
 window.addEventListener('load', retrieveEndorsements());
