@@ -217,8 +217,35 @@ function getBallot() {
           endorseBtn.className = "endorseBtnClicked";
           endorseBtn.innerHTML = "Endorsed";
       }
+      endorseBtn.addEventListener('click', function checkEndorsement() {
 
-        endorseBtn.addEventListener('click', checkClick);
+        var requestEndorsements = new XMLHttpRequest();
+        var endorseUrl = "http://localhost:3000/endorsements/users";
+        var method = "";
+        var candidate_id = this.parentElement.id;
+        var election_id = this.parentElement.getAttribute("data-election_id");
+    
+        if (this.className == "endorseBtn") {
+          method = "POST";
+          this.className = "endorseBtnClicked";
+          this.innerHTML = "Endorsed";
+          console.log("Candidate endorsed!");
+        }
+        else {
+          method = "DELETE";
+          this.className = "endorseBtn";
+          this.innerHTML = "Endorse";
+          console.log("Candidate endorsement removed!");
+        }
+    
+        requestEndorsements.open(method, endorseUrl);
+        requestEndorsements.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        requestEndorsements.responseType = 'json';
+        var payload = "candidate_id="+candidate_id+"&election_id="+election_id;
+        requestEndorsements.send(payload);
+        console.log("Candidate id = " + candidate_id + " Election id = " + election_id);
+        console.log(requestEndorsements.response);
+    }); // end endorseOnClick
       });
     }
   };
@@ -226,18 +253,22 @@ function getBallot() {
 }
 
 function checkClick() {
+  console.log(this);
   if (this.className == "endorseBtn") {
     console.log(this.className);
     console.log(this.parentElement);
-    endorseOnClick();
+    console.log(this.parentElement.id);
+    let boundFunc = endorseOnClick.bind(this);
+    boundFunc();
   }
   if (this.className == "endorseBtnClicked") {
     console.log(this.className);
-    removeEndorsement();
+    console.log(this.parentElement);
+    console.log(this.parentElement.id);
+    let boundFunc = removeEndorsement.bind(this);
+    boundFunc();
   }
 };
 
 window.addEventListener('load', buildProfile());
 window.addEventListener('load', retrieveEndorsements());
-// window.addEventListener('load', buildEndorsements());
-// window.addEventListener('load', getBallot());
