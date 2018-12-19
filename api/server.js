@@ -82,15 +82,18 @@ passport.use('local', new LocalStrategy({passReqToCallback: false, usernameField
 }));
 
 passport.serializeUser((user, done) => {
+    console.log('Serialized user ID: ' + user.id);
     done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
     db.query(`SELECT * FROM voters where voter_id = ?`, [user.id], (err, rows) => {
         if (err) {
+            console.log('Deserizliation error; user ID: ' + user.id);
             console.log(err);
         }
         else {
+            console.log('Deserizalised user ID: ' + user.id);
             done(null, rows[0]);
         }
     });
