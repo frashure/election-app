@@ -52,9 +52,25 @@ var userController = {
                     }
                     db.query('SELECT LAST_INSERT_ID() as id FROM voters', (error, results, fields) => {
                         const id = results[0];
+                        console.log(results);
                         console.log(id);
                         req.login(id, (err) => {
-                            res.redirect('../../dashboard.html')
+                            if (err) {
+                                console.log(err);
+                                res.send(err);
+                            }
+                            else {
+                            // BUILD USER BALLOT
+                            db.query(`INSERT INTO user_ballot (voter_id, office_id) VALUES (?, ?)`, [id.id, '1'], (error, results) => {
+                                if (error) {
+                                    console.log(error);
+                                    res.send(error);
+                                }
+                                else {
+                                    res.redirect('../../dashboard.html');
+                                }
+                            });
+                            }
                         }); //end session login
                     }); // end id query
                     } // end register query callback
