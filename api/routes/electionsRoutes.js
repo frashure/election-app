@@ -3,7 +3,7 @@ const ROUTER = EXPRESS.Router();
 var controller = require('../controllers/electionController');
 
 // GET all elections
-ROUTER.get('/', controller.getElections);
+ROUTER.get('/', controller.getAllElections);
 
 // GET elections by ID
 ROUTER.get('/id', controller.getElectionByID);
