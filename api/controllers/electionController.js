@@ -3,7 +3,7 @@ const db = require('../models/dbconnection');
 var electionsController = {
 
     //GET all elections
-    getElections: (req, res) => {
+    getAllElections: (req, res) => {
         var results = db.query(`SELECT * FROM elections`, (err, results) => {
             if (err) {
                 console.log(err);
