@@ -90,7 +90,18 @@ function buildProfile() {
       var lastName = resultSet[0].lastName;
       var party = resultSet[0].party_id;
 
-      profile.innerHTML = "Name: " + firstName + " " + lastName;
+      switch (party) {
+        case "IND": party = "Independent (No Affiliation)";
+          break;
+        case "REP": party = "Republican";
+          break;
+        case "DEM": party = "Democratic";
+          break;
+        case "GRN": party = "Green";
+          break;
+      }
+
+      profile.innerHTML = "Name: " + firstName + " " + lastName + "<br>Party: " + party;
     }
     else {
       console.log('ERROR: STATUS ' + reqProf.status);
