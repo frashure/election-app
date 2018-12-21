@@ -69,19 +69,25 @@ function buildCandidateList() {
     resultsContainer.removeChild(resultsContainer.firstChild);
 }
 
-    // Capture party value from selector
+    // Capture election, party values from selector
+    var electionSelection = document.getElementById("election-selector").value;
     var partySelection = document.getElementById("party-selector").value;
 
     var listUrl = "";
 
-    if (partySelection == "All") {
+    if (partySelection == "All" && electionSelection == "All") {
         listUrl = "http://localhost:3000/candidates";
     }  
-    else {
-        console.log(partySelection);
+    else if (electionSelection == "All" && !(partySelection == "All") {
+        console.log('Searching by party ID: ' + partySelection);
         listUrl = "http://localhost:3000/candidates/party/"+partySelection;
         console.log(listUrl);
     }
+    else if (partySelection == "All" && !(electionSelection == "All")) {
+        console.log('Searching by election ID: ' + electionSelection);
+        listUrl = "http://localhost:3000/candidates/election/"+electionSelection
+    }
+    else if ()
 
 
     var requestCandidates = new XMLHttpRequest();
@@ -103,10 +109,10 @@ function buildCandidateList() {
             var card = document.createElement("div");
             card.id = candidate.candidate_id;
             card.setAttribute("data-election_id", candidate.election_id);
-            card.className = "candidate-card " + candidate.name + "-card";
+            card.className = "candidate-card " + candidate.party_name + "-card";
             var cardHeader = document.createTextNode(candidate.firstName + " " + candidate.lastName);
             cardHeader.className = "card-header";
-            var cardText = document.createTextNode("Party: " + candidate.name);
+            var cardText = document.createTextNode("Party: " + candidate.party_name);
             cardText.className = "card-text";
             card.appendChild(cardHeader);
             var lineBreak = document.createElement("br");
