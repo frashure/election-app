@@ -13,6 +13,9 @@ ROUTER.get('/id/:id', candidatesController.getCandidatesById);
 // GET all candidates by party
 ROUTER.get('/party/:party', candidatesController.getCandidatesByParty);
 
+// GET candidates by election only
+ROUTER.get('/election/:election_id', candidatesController.getCandidatesByElection);
+
 // GET all candidates by state
 
 // GET all candidates by office
