@@ -78,7 +78,7 @@ function buildCandidateList() {
     if (partySelection == "All" && electionSelection == "All") {
         listUrl = "http://localhost:3000/candidates";
     }  
-    else if (electionSelection == "All" && !(partySelection == "All") {
+    else if (electionSelection == "All" && !(partySelection == "All")) {
         console.log('Searching by party ID: ' + partySelection);
         listUrl = "http://localhost:3000/candidates/party/"+partySelection;
         console.log(listUrl);
@@ -87,7 +87,10 @@ function buildCandidateList() {
         console.log('Searching by election ID: ' + electionSelection);
         listUrl = "http://localhost:3000/candidates/election/"+electionSelection
     }
-    else if ()
+    else if (!(partySelection == "All") && !(electionSelection == "All")) {
+        console.log('Searching by election ID: ' + electionSelection + 'and party: ' + partySelection);
+        listUrl = "http://localhost:3000/candidates/election/"+electionSelection+"/party/"+partySelection;
+    }
 
 
     var requestCandidates = new XMLHttpRequest();
