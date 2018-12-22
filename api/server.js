@@ -94,6 +94,7 @@ passport.deserializeUser((user, done) => {
         }
         else {
             console.log('Deserizalised user ID: ' + user.id);
+            console.log('Deserialized user object: ' + rows + 'End of user object');
             done(null, rows[0]);
         }
     });
