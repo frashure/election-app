@@ -37,9 +37,44 @@
             <label for="passwordMatch">Re-Enter Password</label>
             <input type="password" name="passwordMatch" class="form-control" placeholder="Re-Enter Password">
         </div>
-        <!-- <div class="form-group">
+        <div class="form-group">
             <label for="party">Select a party (optional):</label>
-        </div> -->
+            <select name="partySelector" id="partySelector">
+                <option value="IND">Independent (No Affiliation)</option>
+                <option value="DEM">Democratic</option> 
+                <option value="GRN">Green</option>
+                <option value="REP">Republican</option>
+            </select>
+        </div>
+        <div id="address-message">
+            <h3>Adding an address is optional and is used to determine which electoral districts you are in.
+                This information is only used to determine those districts and is not stored.
+            </h3>
+        </div>
+        <div class="form-group">
+            <label for="address1">Address Line 1</label>
+            <input type="text" name="address1" class="form-control" placeholder="Address Line 1">
+        </div>
+        <div class="form-group">
+            <label for="address2">Address Line 2</label>
+            <input type="text" name="address2" class="form-control" placeholder="Address Line 2">
+        </div>
+        <div class="form-control">
+            <label for="city">City</label>
+            <input type="text" name="city" class="form-control" placeholder="City">
+        </div>
+        <div class="form-group">
+            <label for="state">State</label>
+            <select name="state" id="state">
+                <option value="FL">Florida</option>
+                <option value="VA">Virginia</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="zip">ZIP Code</label>
+            <input type="number" name="zip" class="form-control" placeholder="ZIP">
+        </div>
+        <br>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </main>
