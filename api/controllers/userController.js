@@ -3,6 +3,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var LocalStrategy = require('passport-local').Strategy;
+const https = require('https');
 
 
 
@@ -17,7 +18,20 @@ var userController = {
         let lastName = req.body.lastName;
         let passwordMatch = req.body.passwordMatch;
         let dateRegistered = new Date();
-        let party = "IND";
+        let party = req.body.partySelector;
+
+        let address1 = req.body.address1;
+        let address2 = req.body.address2;
+        let city = req.body.city;
+        let state = req.body.state;
+        let zip = req.body.zip;
+        
+        if (address2) {
+            var address = address1 + ' ' + address2 + ' ' + city + ' ' + state + ' ' + zip;
+        }
+        else {
+            var address = address1 + ' ' + city + ' ' + state + ' ' + zip;
+        }
 
         
 
@@ -38,6 +52,7 @@ var userController = {
             console.log(password);
             console.log(req.body.email);
             console.log(email);
+            console.log(party);
             res.send(errors);
         }
         else {
@@ -49,30 +64,32 @@ var userController = {
                     }
                     else {
                         console.log("Registration complete!");
-                    }
-                    db.query('SELECT LAST_INSERT_ID() as id FROM voters', (error, results, fields) => {
-                        const id = results[0];
-                        console.log(results);
-                        console.log(id);
-                        req.login(id, (err) => {
-                            if (err) {
-                                console.log(err);
-                                res.send(err);
-                            }
-                            else {
-                            // BUILD USER BALLOT
-                            db.query(`INSERT INTO user_ballot (voter_id, office_id) VALUES (?, ?)`, [id.id, '1'], (error, results) => {
-                                if (error) {
-                                    console.log(error);
-                                    res.send(error);
+                        db.query('SELECT LAST_INSERT_ID() as id FROM voters', (error, results, fields) => {
+                            const id = results[0];
+                            console.log(results);
+                            console.log(id);
+                            req.login(id, (err) => {
+                                if (err) {
+                                    console.log(err);
+                                    res.send(err);
                                 }
                                 else {
-                                    res.redirect('../../dashboard.html');
+                                // BUILD USER BALLOT
+                                db.query(`INSERT INTO user_ballot (voter_id, office_id) VALUES (?, ?)`, [id.id, '1'], (error, results) => {
+                                    if (error) {
+                                        console.log(error);
+                                        res.send(error);
+                                    }
+                                    else {
+                                        console.log(address);
+                                        userController.getDivisionsOnRegister(address);
+                                        res.redirect('../../dashboard.html');
+                                    }
+                                });
                                 }
-                            });
-                            }
-                        }); //end session login
-                    }); // end id query
+                            }); //end session login
+                        }); // end id query
+                    }
                     } // end register query callback
                 ); // end register query
             }); // end bcrypt
@@ -132,7 +149,18 @@ var userController = {
                 res.json(results);
             }
         });
-    } // end getBallot
+    }, // end getBallot
+
+    getDivisionsOnRegister: (address) => {
+        console.log('getDivisionsOnRegister called!');
+        let url = 'https://www.googleapis.com/civicinfo/v2/representatives?key='+process.env.CIVIC_KEY+'&address='+address;
+        https.get(url, (res) => {
+           res.on('data', (d) => {
+               let decoded = d.toString('utf8');
+               console.log(decoded);
+           })
+        });
+    }
 }; // end class
 
 module.exports = userController;
