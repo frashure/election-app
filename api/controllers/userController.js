@@ -83,7 +83,7 @@ var userController = {
                                     else {
                                         console.log(address);
                                         userController.getDivisionsOnRegister(address);
-                                        res.redirect('../../dashboard.html');
+                                        res.redirect('../dashboard.html');
                                     }
                                 });
                                 }
@@ -152,14 +152,21 @@ var userController = {
     }, // end getBallot
 
     getDivisionsOnRegister: (address) => {
+        var body = '';
+        result = {};
         console.log('getDivisionsOnRegister called!');
         let url = 'https://www.googleapis.com/civicinfo/v2/representatives?key='+process.env.CIVIC_KEY+'&address='+address;
         https.get(url, (res) => {
-           res.on('data', (d) => {
-               let decoded = d.toString('utf8');
-               console.log(decoded);
-           })
+            res.on('data', (d) => {
+                body += d.toString('utf8');
+           });
+
+            res.on('end', () => {
+                console.log('Inside end: ' + body);
+             });
+             console.log('Outside of end, inside of get: ' + body);
         });
+        console.log('Outside of get: ' + body);
     }
 }; // end class
 
