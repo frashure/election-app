@@ -68,8 +68,11 @@ passport.use('local', new LocalStrategy({passReqToCallback: false, usernameField
             const hash = results[0].voter_password.toString();
             console.log(hash);
             bcrypt.compare(password, hash, (err, response) => {
+                if (err) {
+                    console.log('bcrypt compare error: ' + err);
+                }
                 if (response === true) {
-                    console.log(results);
+                    console.log('Bcrypt compare results: ' + results);
                     return done(null, {"id": results[0].voter_id});
                 }
                 else {
@@ -83,17 +86,17 @@ passport.use('local', new LocalStrategy({passReqToCallback: false, usernameField
 
 passport.serializeUser((user, done) => {
     console.log('Serialized user ID: ' + user.id);
-    done(null, user);
+    done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
-    db.query(`SELECT * FROM voters where voter_id = ?`, [user.id], (err, rows) => {
+passport.deserializeUser((id, done) => {
+    db.query(`SELECT * FROM voters where voter_id = ?`, [id], (err, rows) => {
         if (err) {
-            console.log('Deserizliation error; user ID: ' + user.id);
+            console.log('Deseriazliation error; user ID: ' + id);
             console.log(err);
         }
         else {
-            console.log('Deserizalised user ID: ' + user.id);
+            console.log('Deserizalised user ID: ' + id);
             console.log('Deserialized user object: ' + rows + 'End of user object');
             done(null, rows[0]);
         }
