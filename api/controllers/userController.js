@@ -65,27 +65,30 @@ var userController = {
                     else {
                         console.log("Registration complete!");
                         db.query('SELECT LAST_INSERT_ID() as id FROM voters', (error, results, fields) => {
-                            const id = results[0];
-                            console.log(results);
-                            console.log(id);
-                            req.login(id, (err) => {
+                            const user = results[0];
+                            console.log('Results of select last id: ' + results);
+                            console.log('Id variable: ' + user.id);
+                            req.login(user, (err) => {
                                 if (err) {
-                                    console.log(err);
+                                    console.log(user.id);
+                                    console.log('LOGIN ERROR: ' + err);
                                     res.send(err);
                                 }
                                 else {
                                 // BUILD USER BALLOT
-                                db.query(`INSERT INTO user_ballot (voter_id, office_id) VALUES (?, ?)`, [id.id, '1'], (error, results) => {
-                                    if (error) {
-                                        console.log(error);
-                                        res.send(error);
-                                    }
-                                    else {
-                                        console.log(address);
-                                        userController.getDivisionsOnRegister(address);
-                                        res.redirect('../dashboard.html');
-                                    }
-                                });
+                                    db.query(`INSERT INTO user_ballot (voter_id, office_id) VALUES (?, ?)`, [user.id, '1'], (error, results) => {
+                                        if (error) {
+                                            console.log('BUILD USER BALLOT ERROR: ' + error);
+                                            console.log(user.id);
+                                            res.send(error);
+                                        }
+                                        else {
+                                            console.log(user.id);
+                                            console.log(address);
+                                            userController.getDivisionsOnRegister(address);
+                                            res.redirect('../dashboard.html');
+                                        }
+                                    });
                                 }
                             }); //end session login
                         }); // end id query
