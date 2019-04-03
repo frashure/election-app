@@ -161,15 +161,15 @@ var userController = {
         let url = 'https://www.googleapis.com/civicinfo/v2/representatives?key='+process.env.CIVIC_KEY+'&address='+address;
         https.get(url, (res) => {
             res.on('data', (d) => {
-                body += d.toString('utf8');
+                body += d;
            });
 
             res.on('end', () => {
-                console.log('Inside end: ' + body);
+                console.log('Inside end: ' + JSON.parse(body));
+                result = JSON.parse(body);
+                return result;
              });
-             console.log('Outside of end, inside of get: ' + body);
         });
-        console.log('Outside of get: ' + body);
     }
 }; // end class
 
