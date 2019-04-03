@@ -17,7 +17,9 @@ ROUTER.get('/logout', (req, res) => {
     req.logout();
     req.session.destroy();
     res.redirect('../');
-})
+});
+
+ROUTER.post('/divisions', user.getDivisionsOnRegister);
 
 ROUTER.get('/ballot', user.isLoggedIn, controller.getBallot);
 
